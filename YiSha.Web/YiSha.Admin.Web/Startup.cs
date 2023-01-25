@@ -63,6 +63,10 @@ namespace YiSha.Admin.Web
             services.AddMemoryCache();
             services.AddSession();
             services.AddHttpContextAccessor();
+            // 配置跨域
+            //services.AddCors(options =>
+            //    options.AddPolicy("cors",
+            //    p => p.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().AllowCredentials()));
 
             services.AddOptions();
 
@@ -112,6 +116,16 @@ namespace YiSha.Admin.Web
                 endpoints.MapControllerRoute("areas", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+
+            {
+
+                ForwardedHeaders = Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedFor |
+                Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedProto
+
+            });
+            //p跨域
+            //app.UseCors("cors");
             GlobalContext.ServiceProvider = app.ApplicationServices;
         }
     }

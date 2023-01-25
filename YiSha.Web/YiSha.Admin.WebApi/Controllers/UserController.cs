@@ -14,7 +14,7 @@ using YiSha.Web.Code;
 
 namespace YiSha.Admin.WebApi.Controllers
 {
-    [Route("[controller]/[action]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     [AuthorizeFilter]
     public class UserController : ControllerBase

@@ -73,7 +73,7 @@ namespace YiSha.Data.EF
                     await this.Close();
                 }
                 return returnValue;
-            }
+        }
             catch
             {
                 throw;
@@ -83,9 +83,9 @@ namespace YiSha.Data.EF
                 if (dbContextTransaction == null)
                 {
                     await this.Close();
-                }
-            }
         }
+    }
+}
         /// <summary>
         /// 把当前操作回滚成未提交状态
         /// </summary>

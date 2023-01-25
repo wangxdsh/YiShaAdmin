@@ -38,5 +38,14 @@ namespace YiSha.Util.Model
         /// 数据
         /// </summary>
         public T Data { get; set; }
+
+        public void initDto( int tag,string message, string description, int total)
+        {
+            //data.GetType().GetProperty("").va;
+            this.Tag = tag;
+            this.Message = message;
+            this.Description = description;
+            this.Total = total;
+        }
     }
 }

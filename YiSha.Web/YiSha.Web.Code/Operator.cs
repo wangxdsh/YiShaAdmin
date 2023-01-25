@@ -21,7 +21,11 @@ namespace YiSha.Web.Code
 
         private string LoginProvider = GlobalContext.Configuration.GetSection("SystemConfig:LoginProvider").Value;
         private string TokenName = "UserToken"; //cookie name or session name
-
+       /// <summary>
+       /// 将Token 和 user 写入Cache
+       /// </summary>
+       /// <param name="token"></param>
+       /// <returns></returns>
         public async Task AddCurrent(string token)
         {
             switch (LoginProvider)
@@ -73,7 +77,7 @@ namespace YiSha.Web.Code
         }
 
         /// <summary>
-        /// Api接口需要传入apiToken
+        /// Api接口需要传入apiToken，获取操作user，从Cache和数据库中获取
         /// </summary>
         /// <param name="apiToken"></param>
         /// <returns></returns>

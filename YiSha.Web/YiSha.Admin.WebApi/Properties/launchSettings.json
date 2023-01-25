@@ -12,11 +12,10 @@
     "YiSha.Admin.WebApi": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api-doc",
+      "applicationUrl": "http://localhost:5100",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "applicationUrl": "http://localhost:5001"
+      }
     }
   }
 }

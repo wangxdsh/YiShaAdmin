@@ -15,6 +15,8 @@ using YiSha.Util;
 using YiSha.Util.Model;
 using YiSha.Business.AutoJob;
 using YiSha.Admin.WebApi.Controllers;
+using AutoMapper;
+using AspNetCoreWeChatCode2Session;
 
 namespace YiSha.Admin.WebApi
 {
@@ -48,11 +50,17 @@ namespace YiSha.Admin.WebApi
             {
                 // 返回数据首字母不小写，CamelCasePropertyNamesContractResolver是小写
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+                options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss";
             });
 
             services.AddMemoryCache();
 
             services.AddDataProtection().PersistKeysToFileSystem(new DirectoryInfo(GlobalContext.HostingEnvironment.ContentRootPath + Path.DirectorySeparatorChar + "DataProtection"));
+
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            //// 添加WeChat单例服务
+            services.AddSingleton<WeChat>(new WeChat("wxa1dcda4bdebfeb49", "fb66a8475d9e2dc0ec2d895fc6ea43cf"));
 
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);  // 注册Encoding
 
@@ -88,11 +96,14 @@ namespace YiSha.Admin.WebApi
                 OnPrepareResponse = GlobalContext.SetCacheControl
             });
 
+            //var app = builder.Build();
+            app.UseAuthorization();
+
             app.UseMiddleware(typeof(GlobalExceptionMiddleware));
 
             app.UseCors(builder =>
             {
-                builder.WithOrigins(GlobalContext.SystemConfig.AllowCorsSite.Split(',')).AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+                //builder.WithOrigins(GlobalContext.SystemConfig.AllowCorsSite.Split(',')).AllowAnyHeader().AllowAnyMethod().AllowCredentials();
             });
             app.UseSwagger(c =>
             {

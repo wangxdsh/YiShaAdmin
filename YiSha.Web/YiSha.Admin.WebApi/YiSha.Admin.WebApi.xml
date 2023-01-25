@@ -11,7 +11,20 @@
             <param name="param"></param>
             <returns></returns>
         </member>
-        <member name="M:YiSha.Admin.WebApi.Controllers.NewsController.GetPageList(YiSha.Model.Param.OrganizationManage.NewsListParam,YiSha.Util.Model.Pagination)">
+        <member name="M:YiSha.Admin.WebApi.Controllers.FsWxApi.CatgoryController.GetCategoryList(YiSha.Model.Param.AppManage.FsCatgoryListParam)">
+            <summary>
+            获取分类列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:YiSha.Admin.WebApi.Controllers.FsWxApi.CatgoryController.GetForm(System.Int64)">
+            <summary>
+            获取指定分类
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:YiSha.Admin.WebApi.Controllers.FsWxApi.ContentController.GetPageList(YiSha.Model.Param.AppManage.FsNewsListParam,YiSha.Util.Model.Pagination)">
             <summary>
             获取文章列表
             </summary>
@@ -19,26 +32,32 @@
             <param name="pagination"></param>
             <returns></returns>
         </member>
-        <member name="M:YiSha.Admin.WebApi.Controllers.NewsController.GetPageContentList(YiSha.Model.Param.OrganizationManage.NewsListParam,YiSha.Util.Model.Pagination)">
+        <member name="M:YiSha.Admin.WebApi.Controllers.FsWxApi.ContentController.GetListForApi(YiSha.Model.Param.AppManage.FsNewsListParam,YiSha.Util.Model.Pagination)">
             <summary>
-            获取文章列表
+            分类页-文章列表
             </summary>
             <param name="param"></param>
             <param name="pagination"></param>
             <returns></returns>
         </member>
-        <member name="M:YiSha.Admin.WebApi.Controllers.NewsController.GetForm(System.Int64)">
+        <member name="M:YiSha.Admin.WebApi.Controllers.FsWxApi.ContentController.GetForm(System.Int64)">
             <summary>
             获取文章内容
             </summary>
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:YiSha.Admin.WebApi.Controllers.NewsController.SaveForm(YiSha.Entity.OrganizationManage.NewsEntity)">
+        <member name="M:YiSha.Admin.WebApi.Controllers.FsWxApi.IndexController.GetBanner(YiSha.Model.Param.OrganizationManage.FsBannerListParam)">
             <summary>
-            保存文章
+            获取Banner图
             </summary>
-            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:YiSha.Admin.WebApi.Controllers.FsWxApi.IndexController.GetKingCons(YiSha.Model.Param.AppManage.FsKingConsListParam)">
+            <summary>
+            获取金刚位
+            </summary>
+            <param name="param"></param>
             <returns></returns>
         </member>
         <member name="M:YiSha.Admin.WebApi.Controllers.UserController.Login(System.String,System.String)">
@@ -72,6 +91,197 @@
             </summary>
             <param name="context"></param>
             <param name="next"></param>
+            <returns></returns>
+        </member>
+        <member name="P:AspNetCoreWeChatCode2Session.Controllers.LoginController.LoginParameter.code">
+            <summary>
+            用于解析session_key
+            </summary>
+        </member>
+        <member name="P:AspNetCoreWeChatCode2Session.Controllers.LoginController.LoginParameter.rawData">
+            <summary>
+            不包括敏感信息的原始数据字符串，用于计算签名
+            </summary>
+        </member>
+        <member name="P:AspNetCoreWeChatCode2Session.Controllers.LoginController.LoginParameter.encryptedData">
+            <summary>
+            包括敏感数据在内的完整用户信息的加密数据
+            </summary>
+        </member>
+        <member name="P:AspNetCoreWeChatCode2Session.Controllers.LoginController.LoginParameter.iv">
+            <summary>
+            加密算法的初始向量
+            </summary>
+        </member>
+        <member name="P:AspNetCoreWeChatCode2Session.Controllers.LoginController.LoginParameter.signature">
+            <summary>
+            使用 sha1( rawData + sessionkey ) 得到字符串，用于校验用户信息
+            </summary>
+        </member>
+        <member name="P:AspNetCoreWeChatCode2Session.WeChat.appid">
+            <summary>
+            小程序 appId
+            </summary>
+        </member>
+        <member name="P:AspNetCoreWeChatCode2Session.WeChat.secret">
+            <summary>
+            小程序 appSecret
+            </summary>
+        </member>
+        <member name="P:AspNetCoreWeChatCode2Session.WeChat.Code2SessionParamter.appid">
+            <summary>
+            小程序 appId
+            </summary>
+        </member>
+        <member name="P:AspNetCoreWeChatCode2Session.WeChat.Code2SessionParamter.secret">
+            <summary>
+            小程序 appSecret
+            </summary>
+        </member>
+        <member name="P:AspNetCoreWeChatCode2Session.WeChat.Code2SessionParamter.js_code">
+            <summary>
+            登录时获取的 code
+            </summary>
+        </member>
+        <member name="P:AspNetCoreWeChatCode2Session.WeChat.Code2SessionParamter.grant_type">
+            <summary>
+             授权类型，此处只需填写 authorization_code
+            </summary>
+        </member>
+        <member name="P:AspNetCoreWeChatCode2Session.WeChat.Code2SessionResult.openid">
+            <summary>
+            用户唯一标识
+            </summary>
+        </member>
+        <member name="P:AspNetCoreWeChatCode2Session.WeChat.Code2SessionResult.session_key">
+            <summary>
+            会话密钥
+            </summary>
+        </member>
+        <member name="P:AspNetCoreWeChatCode2Session.WeChat.Code2SessionResult.unionid">
+            <summary>
+            用户在开放平台的唯一标识符，若当前小程序已绑定到微信开放平台帐号下会返回，详见 UnionID 机制说明。
+            </summary>
+        </member>
+        <member name="P:AspNetCoreWeChatCode2Session.WeChat.Code2SessionResult.errcode">
+            <summary>
+            错误码
+            </summary>
+        </member>
+        <member name="P:AspNetCoreWeChatCode2Session.WeChat.Code2SessionResult.errmsg">
+            <summary>
+             错误信息
+            </summary>
+        </member>
+        <member name="P:AspNetCoreWeChatCode2Session.WeChat.UserInfo.nickName">
+            <summary>
+            用户昵称
+            </summary>
+        </member>
+        <member name="P:AspNetCoreWeChatCode2Session.WeChat.UserInfo.gender">
+            <summary>
+            用户性别
+            </summary>
+        </member>
+        <member name="P:AspNetCoreWeChatCode2Session.WeChat.UserInfo.country">
+            <summary>
+            用户所在国家
+            </summary>
+        </member>
+        <member name="P:AspNetCoreWeChatCode2Session.WeChat.UserInfo.province">
+            <summary>
+            用户所在省份。
+            </summary>
+        </member>
+        <member name="P:AspNetCoreWeChatCode2Session.WeChat.UserInfo.city">
+            <summary>
+            用户所在城市。
+            </summary>
+        </member>
+        <member name="P:AspNetCoreWeChatCode2Session.WeChat.UserInfo.unionId">
+            <summary>
+            用户在开放平台的唯一标识符，若当前小程序已绑定到微信开放平台帐号下会返回，详见 UnionID 机制说明。
+            </summary>
+        </member>
+        <member name="P:AspNetCoreWeChatCode2Session.WeChat.UserInfo.avatarUrl">
+            <summary>
+            用户头像图片的 URL。URL 最后一个数值代表正方形头像大小（有 0、46、64、96、132 数值可选，0 代表 640x640 的正方形头像，46 表示 46x46 的正方形头像，剩余数值以此类推。默认132），用户没有头像时该项为空。若用户更换头像，原有头像 URL 将失效。
+            </summary>
+        </member>
+        <member name="P:AspNetCoreWeChatCode2Session.WeChat.UserInfo.watermark">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:AspNetCoreWeChatCode2Session.WeChat.Watermark.appid">
+            <summary>
+            敏感数据归属 appId，开发者可校验此参数与自身 appId 是否一致
+            </summary>
+        </member>
+        <member name="P:AspNetCoreWeChatCode2Session.WeChat.Watermark.timestamp">
+            <summary>
+            敏感数据获取的时间戳, 开发者可以用于数据时效性校验
+            </summary>
+        </member>
+        <member name="M:AspNetCoreWeChatCode2Session.WeChat.GetCode2Session(AspNetCoreWeChatCode2Session.WeChat.Code2SessionParamter)">
+            <summary>
+            登录凭证校验。通过 wx.login 接口获得临时登录凭证 code 后传到开发者服务器调用此接口完成登录流程。更多使用方法详见 小程序登录。
+            https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/login.html
+            </summary>
+            <param name="code2SessionParamter">参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:AspNetCoreWeChatCode2Session.WeChat.Get(System.String)">
+            <summary>
+            内部使用的通用方法
+            </summary>
+            <param name="url"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AspNetCoreWeChatCode2Session.WeChat.GetUserInfo(System.String,System.String,System.String)">
+            <summary>
+            解密获取用户信息 (不验证签名)
+            </summary>
+            <param name="iv">加密算法的初始向量</param>
+            <param name="encryptedData">包括敏感数据在内的完整用户信息的加密数据</param>
+            <param name="session_key">会话密钥</param> 
+            <returns></returns>
+        </member>
+        <member name="M:AspNetCoreWeChatCode2Session.WeChat.GetUserInfo(System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            解密获取用户信息 (验证签名)
+            </summary>
+            <param name="iv">加密算法的初始向量</param>
+            <param name="encryptedData">包括敏感数据在内的完整用户信息的加密数据</param>
+            <param name="session_key">会话密钥</param>
+            <param name="rawData">不包括敏感信息的原始数据字符串，用于计算签名</param>
+            <param name="signature">使用 sha1( rawData + sessionkey ) 得到字符串，用于校验用户信息</param>
+            <returns></returns>
+        </member>
+        <member name="M:AspNetCoreWeChatCode2Session.WeChat.CheckSignature(System.String,System.String,System.String)">
+            <summary>
+            检查签名
+            </summary>
+            <param name="rawData">不包括敏感信息的原始数据字符串，用于计算签名</param>
+            <param name="session_key"></param>
+            <param name="signature">使用 sha1( rawData + sessionkey ) 得到字符串，用于校验用户信息</param>
+            <exception cref="T:System.Exception"></exception>
+        </member>
+        <member name="M:AspNetCoreWeChatCode2Session.WeChat.SHA1Encryption(System.String,System.Text.Encoding)">
+            <summary>  
+            SHA1 加密，返回大写字符串  
+            </summary>  
+            <param name="content">需要加密字符串</param>  
+            <param name="encode">指定加密编码</param>  
+            <returns>返回40位大写字符串</returns>  
+        </member>
+        <member name="M:AspNetCoreWeChatCode2Session.WeChat.AESDecrypt(System.String,System.String,System.String)">
+            <summary>
+            Aes 解密
+            </summary>
+            <param name="encryptedData"></param>
+            <param name="sessionKey"></param>
+            <param name="iv"></param>
             <returns></returns>
         </member>
     </members>

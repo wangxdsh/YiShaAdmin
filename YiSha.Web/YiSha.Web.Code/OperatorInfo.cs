@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace YiSha.Web.Code
 {
+    /// <summary>
+    /// 登录用户实体 对应user表
+    /// </summary>
     public class OperatorInfo
     {
         public long? UserId { get; set; }

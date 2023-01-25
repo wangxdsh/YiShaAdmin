@@ -11,6 +11,10 @@
 
   <ItemGroup>
     <Folder Include="Param\ToolManage\" />
+    <Folder Include="Result\AppManage\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Result\AppManage\" />
+  </ItemGroup>
 </Project>

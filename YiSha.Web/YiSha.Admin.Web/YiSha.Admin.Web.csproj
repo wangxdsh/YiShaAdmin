@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <AssemblyVersion>3.1.0.0</AssemblyVersion>
     <FileVersion>3.1.0.0</FileVersion>
     <Company>YiSha.Admin.Web</Company>
@@ -15,12 +15,16 @@
     <Content Include="dotnet_run.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="www.shfogo.cn_server.pfx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="BuildBundlerMinifier" Version="3.2.435" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel.Https" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,5 +36,20 @@
     <ProjectReference Include="..\..\YiSha.Util\YiSha.CodeGenerator\YiSha.CodeGenerator.csproj" />
     <ProjectReference Include="..\..\YiSha.Util\YiSha.Util\YiSha.Util.csproj" />
     <ProjectReference Include="..\YiSha.Web.Code\YiSha.Web.Code.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Areas\AppManage\" />
+    <None Remove="Areas\AppManage\Views\FsNews\" />
+    <None Remove="Microsoft.AspNetCore.Server.Kestrel.Https" />
+    <None Remove="www.shfogo.cn_server.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Areas\AppManage\" />
+    <Folder Include="Areas\AppManage\Views\FsNews\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="www.shfogo.cn_server.pfx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>
