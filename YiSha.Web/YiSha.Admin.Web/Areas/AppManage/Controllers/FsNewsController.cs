@@ -12,6 +12,7 @@ using YiSha.Admin.Web.Controllers;
 using YiSha.Entity.AppManage;
 using YiSha.Business.AppManage;
 using YiSha.Model.Param.AppManage;
+using YiSha.Web.Code;
 
 namespace YiSha.Admin.Web.Areas.AppManage.Controllers
 {
@@ -32,8 +33,9 @@ namespace YiSha.Admin.Web.Areas.AppManage.Controllers
             return View();
         }
 
-        public ActionResult FsNewsForm()
+        public async Task<IActionResult> FsNewsForm()
         {
+            ViewBag.OperatorInfo = await Operator.Instance.Current();
             return View();
         }
         #endregion
@@ -59,6 +61,13 @@ namespace YiSha.Admin.Web.Areas.AppManage.Controllers
         public async Task<ActionResult> GetFormJson(long id)
         {
             TData<FsNewsEntity> obj = await fsNewsBLL.GetEntity(id);
+            return Json(obj);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetMaxSortJson()
+        {
+            TData<int> obj = await fsNewsBLL.GetMaxSort();
             return Json(obj);
         }
         #endregion

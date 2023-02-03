@@ -12,6 +12,49 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\yisha\css\style.min.css" />
+    <Content Remove="wwwroot\yisha\js\yisha.min.js" />
+    <Content Remove="wwwroot\yisha\css\yisha.min.css" />
+    <Content Remove="wwwroot\yisha\js\yisha-init.min.js" />
+    <Content Remove="wwwroot\yisha\js\yisha-index.min.js" />
+    <Content Remove="wwwroot\yisha\js\yisha-data.min.js" />
+    <Content Remove="wwwroot\lib\jquery\2.1.4\jquery.min.js" />
+    <Content Remove="wwwroot\lib\bootstrap\3.3.7\css\bootstrap.min.css" />
+    <Content Remove="wwwroot\lib\bootstrap\3.3.7\js\bootstrap.min.js" />
+    <Content Remove="wwwroot\lib\fontawesome\4.7.0\css\fontawesome.min.css" />
+    <Content Remove="wwwroot\lib\layer\3.1.1\layer.min.js" />
+    <Content Remove="wwwroot\lib\laydate\5.0.9\laydate.min.js" />
+    <Content Remove="wwwroot\lib\jquery.validation\1.14.0\jquery.validate.min.js" />
+    <Content Remove="wwwroot\lib\zTree\v3\css\metroStyle\metroStyle.min.css" />
+    <Content Remove="wwwroot\lib\zTree\v3\js\ztree.min.js" />
+    <Content Remove="wwwroot\lib\select2\4.0.6\css\select2.min.css" />
+    <Content Remove="wwwroot\lib\select2\4.0.6\js\select2.min.js" />
+    <Content Remove="wwwroot\lib\jquery.layout\1.4.4\jquery.layout-latest.min.css" />
+    <Content Remove="wwwroot\lib\jquery.layout\1.4.4\jquery.layout-latest.min.js" />
+    <Content Remove="wwwroot\lib\icheck\1.0.2\skins\custom.min.css" />
+    <Content Remove="wwwroot\lib\icheck\1.0.2\icheck.min.js" />
+    <Content Remove="wwwroot\lib\bootstrap.table\1.12.0\bootstrap-table.min.css" />
+    <Content Remove="wwwroot\lib\bootstrap.table\1.12.0\bootstrap-table.min.js" />
+    <Content Remove="wwwroot\lib\bootstrap.treetable\1.0\bootstrap-treetable.min.css" />
+    <Content Remove="wwwroot\lib\bootstrap.treetable\1.0\bootstrap-treetable.min.js" />
+    <Content Remove="wwwroot\lib\jquery.smartwizard\4.0.1\css\smart_wizard.min.css" />
+    <Content Remove="wwwroot\lib\jquery.smartwizard\4.0.1\css\smart_wizard.min.js" />
+    <Content Remove="wwwroot\lib\jquery.ui\1.12.1\jquery-ui.min.css" />
+    <Content Remove="wwwroot\lib\jquery.ui\1.12.1\jquery-ui.min.js" />
+    <Content Remove="wwwroot\lib\highlight\9.13.1\css\vs.min.css" />
+    <Content Remove="wwwroot\lib\jquery.ui\1.12.1\highlight.pack.min.js" />
+    <Content Remove="wwwroot\lib\cropbox\1.0\cropbox.min.css" />
+    <Content Remove="wwwroot\lib\cropbox\1.0\cropbox.min.js" />
+    <Content Remove="wwwroot\lib\imageupload\1.0\css\imgup.min.css" />
+    <Content Remove="wwwroot\lib\imageupload\1.0\js\imgup.min.js" />
+    <Content Remove="wwwroot\lib\fileinput\5.0.3\js\fileinput.min.js" />
+    <Content Remove="wwwroot\lib\fileinput\5.0.3\css\fileinput.min.css" />
+    <Content Remove="wwwroot\lib\report\echarts\echarts.min.js" />
+    <Content Remove="wwwroot\lib\report\peity\jquery.peity.min.js" />
+    <Content Remove="wwwroot\lib\bootstrap.tagsinput\0.8.0\bootstrap-tagsinput.min.css" />
+    <Content Remove="wwwroot\lib\bootstrap.tagsinput\0.8.0\bootstrap-tagsinput.min.js" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="dotnet_run.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

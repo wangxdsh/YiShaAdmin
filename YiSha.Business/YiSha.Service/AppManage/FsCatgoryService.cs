@@ -41,6 +41,13 @@ namespace YiSha.Service.AppManage
         {
             return await this.BaseRepository().FindEntity<FsCatgoryEntity>(id);
         }
+        public async Task<int> GetMaxSort()
+        {
+            object result = await this.BaseRepository().FindObject("SELECT MAX(sortIndex) FROM catgory");
+            int sort = result.ParseToInt();
+            sort++;
+            return sort;
+        }
         #endregion
 
         #region 提交数据

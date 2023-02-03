@@ -18,6 +18,7 @@ using YiSha.Enum;
 using YiSha.Entity;
 using YiSha.Data.EF;
 using YiSha.Service.SystemManage;
+using Newtonsoft.Json.Linq;
 
 namespace YiSha.Service.OrganizationManage
 {
@@ -55,6 +56,23 @@ namespace YiSha.Service.OrganizationManage
             expression = expression.Or(t => t.Mobile == userName);
             expression = expression.Or(t => t.Email == userName);
             return await this.BaseRepository().FindEntity(expression);
+        }
+        /// <summary>
+        /// 通过 openId 或 Token 获取用户
+        /// </summary>
+        /// <param name="wxId"></param>
+        /// <param name="platform">1, opendid  2,ApiToken</param>
+        /// <returns></returns>
+        public async Task<UserEntity> CheckLoginByWx(string wxId, int platform)
+        {
+            if (!SecurityHelper.IsSafeSqlParam(wxId))
+            {
+                return null;
+            }
+            wxId = wxId.ParseToString().Trim();
+            return platform == 1 ?
+                await this.BaseRepository().FindEntity<UserEntity>(p => p.Wechat == wxId):
+                await this.BaseRepository().FindEntity<UserEntity>(p => p.ApiToken == wxId);
         }
 
         public bool ExistUserName(UserEntity entity)

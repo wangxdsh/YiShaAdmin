@@ -138,8 +138,18 @@
             });
         }
         else {
-            var defaultData = {};
-            $('#form').setWebControls(defaultData);
+            ys.ajax({
+                url: '@Url.Content("~/AppManage/FsNews/GetMaxSortJson")',
+                type: "get",
+                success: function (obj) {
+                    if (obj.Tag == 1) {
+                        var defaultData = {};
+                        defaultData.NewsAuthor = "@ViewBag.OperatorInfo.RealName";
+                        defaultData.NewsSort = obj.Data;
+                        $("#form").setWebControls(defaultData);
+                    }
+                }
+            });
         }
     }
 

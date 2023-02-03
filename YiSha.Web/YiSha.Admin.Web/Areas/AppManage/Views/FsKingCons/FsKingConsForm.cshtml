@@ -71,8 +71,17 @@
             });
         }
         else {
-            var defaultData = {};
-            $('#form').setWebControls(defaultData);
+            ys.ajax({
+                url: '@Url.Content("~/AppManage/FsKingCons/GetMaxSortJson")',
+                type: "get",
+                success: function (obj) {
+                    if (obj.Tag == 1) {
+                        var defaultData = {};
+                        defaultData.Sort = obj.Data;
+                        $("#form").setWebControls(defaultData);
+                    }
+                }
+            });
         }
     }
 

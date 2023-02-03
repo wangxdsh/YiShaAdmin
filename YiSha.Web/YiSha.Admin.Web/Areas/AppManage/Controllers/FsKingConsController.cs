@@ -65,6 +65,12 @@ namespace YiSha.Admin.Web.Areas.AppManage.Controllers
             TData<FsKingConsEntity> obj = await fsKingConsBLL.GetEntity(id);
             return Json(obj);
         }
+        [HttpGet]
+        public async Task<IActionResult> GetMaxSortJson()
+        {
+            TData<int> obj = await fsKingConsBLL.GetMaxSort();
+            return Json(obj);
+        }
         #endregion
 
         #region 提交数据

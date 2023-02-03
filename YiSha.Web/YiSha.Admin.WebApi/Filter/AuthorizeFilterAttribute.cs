@@ -16,6 +16,9 @@ using YiSha.Util;
 using YiSha.Util.Extension;
 using YiSha.Util.Model;
 using YiSha.Web.Code;
+using YiSha.Business.OrganizationManage;
+using YiSha.Entity.OrganizationManage;
+using YiSha.Model.Result;
 
 namespace YiSha.Admin.WebApi.Controllers
 {
@@ -24,13 +27,25 @@ namespace YiSha.Admin.WebApi.Controllers
     /// </summary>
     public class AuthorizeFilterAttribute : ActionFilterAttribute
     {
+        public AuthorizeFilterAttribute() { }
+
+        public AuthorizeFilterAttribute(string authorize)
+        {
+            this.Authorize = authorize;
+        }
+
+        /// <summary>
+        /// 权限字符串，例如 organization:user:view
+        /// </summary>
+        public string Authorize { get; set; }
+
         /// <summary>
         /// 忽略token的方法
         /// </summary>
         public static readonly string[] IgnoreToken = { "GetWxOpenId", "Login", "LoginOff" };
 
         /// <summary>
-        /// 异步接口日志
+        /// 异步接口日志，调用接口时，校验token，校验失败重新登录
         /// </summary>
         /// <param name="context"></param>
         /// <param name="next"></param>
@@ -39,35 +54,95 @@ namespace YiSha.Admin.WebApi.Controllers
         {
             Stopwatch sw = new Stopwatch();
             sw.Start();
+            bool hasPermission = false;
+            //var resultContext = new ;
 
             string token = context.HttpContext.Request.Headers["ApiToken"].ParseToString();
-            OperatorInfo user = await Operator.Instance.Current(token);
-            if (user != null)
-            {
-                // 根据传入的Token，设置CustomerId
-                if (context.ActionArguments != null && context.ActionArguments.Count > 0)
-                {
-                    PropertyInfo property = context.ActionArguments.FirstOrDefault().Value.GetType().GetProperty("Token");
-                    if (property != null)
-                    {
-                        property.SetValue(context.ActionArguments.FirstOrDefault().Value, token, null);
-                    }
-                    switch (context.HttpContext.Request.Method.ToUpper())
-                    {
-                        case "GET":
-                            break;
 
-                        case "POST":
-                            property = context.ActionArguments.FirstOrDefault().Value.GetType().GetProperty("CustomerId");
-                            if (property != null)
+            OperatorInfo user = await Operator.Instance.Current(token);
+            if (user != null)// 缓存里有用户，就继续判断权限
+            {
+                #region 看不懂，注释掉不用了
+                //// 根据传入的Token，设置CustomerId
+                //if (context.ActionArguments != null && context.ActionArguments.Count > 0)
+                //{
+                //    PropertyInfo property = context.ActionArguments.FirstOrDefault().Value.GetType().GetProperty("Token");
+                //    if (property != null)
+                //    {
+                //        property.SetValue(context.ActionArguments.FirstOrDefault().Value, token, null);
+                //    }
+                //    switch (context.HttpContext.Request.Method.ToUpper())
+                //    {
+                //        case "GET":
+                //            break;
+
+                //        case "POST":
+                //            property = context.ActionArguments.FirstOrDefault().Value.GetType().GetProperty("CustomerId");
+                //            if (property != null)
+                //            {
+                //                property.SetValue(context.ActionArguments.FirstOrDefault().Value, user.UserId, null);
+                //            }
+                //            break;
+                //    }
+                //}
+                #endregion
+                // 权限判断
+                if (!string.IsNullOrEmpty(Authorize))
+                {
+                    string[] authorizeList = Authorize.Split(',');
+                    TData<List<MenuAuthorizeInfo>> objMenuAuthorize = await new MenuAuthorizeBLL().GetAuthorizeList(user);
+                    List<MenuAuthorizeInfo> authorizeInfoList = objMenuAuthorize.Data.Where(p => authorizeList.Contains(p.Authorize)).ToList();
+                    if (authorizeInfoList.Any())
+                    {
+                        hasPermission = true;
+
+                        #region  新增和修改判断
+                        if (context.RouteData.Values["Action"].ToString() == "SaveFormJson")
+                        {
+                            var id = context.HttpContext.Request.Form["Id"];
+                            if (id.ParseToLong() > 0)
                             {
-                                property.SetValue(context.ActionArguments.FirstOrDefault().Value, user.UserId, null);
+                                if (!authorizeInfoList.Where(p => p.Authorize.Contains("edit")).Any())
+                                {
+                                    hasPermission = false;
+                                }
                             }
-                            break;
+                            else
+                            {
+                                if (!authorizeInfoList.Where(p => p.Authorize.Contains("add")).Any())
+                                {
+                                    hasPermission = false;
+                                }
+                            }
+                        }
+                        #endregion
+                    }
+                    if (!hasPermission)
+                    {
+                        if (context.HttpContext.Request.IsAjaxRequest())
+                        {
+                            TData obj = new TData();
+                            obj.Message = "抱歉，没有权限";
+                            context.Result = new JsonResult(obj);
+                        }
+                        else
+                        {
+                            context.Result = new RedirectResult("~/Home/NoPermission");
+                        }
                     }
                 }
             }
-            var resultContext = await next();
+            else
+            {
+                TData obj = new TData();
+                obj.Message = "先去登录！";
+                obj.Tag = 0;
+                context.Result = new JsonResult(obj);
+            }
+            if (hasPermission)
+            {
+                var resultContext = await next();
+            }
 
             sw.Stop();
 
@@ -97,32 +172,32 @@ namespace YiSha.Admin.WebApi.Controllers
             }
             #endregion
 
-            if (resultContext.Exception != null)
-            {
-                #region 异常获取
-                StringBuilder sbException = new StringBuilder();
-                Exception exception = resultContext.Exception;
-                sbException.AppendLine(exception.Message);
-                while (exception.InnerException != null)
-                {
-                    sbException.AppendLine(exception.InnerException.Message);
-                    exception = exception.InnerException;
-                }
-                sbException.AppendLine(TextHelper.GetSubString(resultContext.Exception.StackTrace, 8000));
-                #endregion
+            //if (resultContext.Exception != null)
+            //{
+            //    #region 异常获取
+            //    StringBuilder sbException = new StringBuilder();
+            //    Exception exception = resultContext.Exception;
+            //    sbException.AppendLine(exception.Message);
+            //    while (exception.InnerException != null)
+            //    {
+            //        sbException.AppendLine(exception.InnerException.Message);
+            //        exception = exception.InnerException;
+            //    }
+            //    sbException.AppendLine(TextHelper.GetSubString(resultContext.Exception.StackTrace, 8000));
+            //    #endregion
 
-                logApiEntity.ExecuteResult = sbException.ToString();
-                logApiEntity.LogStatus = OperateStatusEnum.Fail.ParseToInt();
-            }
-            else
-            {
-                ObjectResult result = context.Result as ObjectResult;
-                if (result != null)
-                {
-                    logApiEntity.ExecuteResult = JsonConvert.SerializeObject(result.Value);
-                    logApiEntity.LogStatus = OperateStatusEnum.Success.ParseToInt();
-                }
-            }
+            //    logApiEntity.ExecuteResult = sbException.ToString();
+            //    logApiEntity.LogStatus = OperateStatusEnum.Fail.ParseToInt();
+            //}
+            //else
+            //{
+            //    ObjectResult result = context.Result as ObjectResult;
+            //    if (result != null)
+            //    {
+            //        logApiEntity.ExecuteResult = JsonConvert.SerializeObject(result.Value);
+            //        logApiEntity.LogStatus = OperateStatusEnum.Success.ParseToInt();
+            //    }
+            //}
             if (user != null)
             {
                 logApiEntity.BaseCreatorId = user.UserId;

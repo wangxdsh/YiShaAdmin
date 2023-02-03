@@ -12,6 +12,7 @@ using YiSha.Admin.Web.Controllers;
 using YiSha.Entity.OrganizationManage;
 using YiSha.Business.OrganizationManage;
 using YiSha.Model.Param.OrganizationManage;
+using YiSha.Business.AppManage;
 
 namespace YiSha.Admin.Web.Areas.OrganizationManage.Controllers
 {
@@ -59,6 +60,12 @@ namespace YiSha.Admin.Web.Areas.OrganizationManage.Controllers
         public async Task<ActionResult> GetFormJson(long id)
         {
             TData<FsBannerEntity> obj = await fsBannerBLL.GetEntity(id);
+            return Json(obj);
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetMaxSortJson()
+        {
+            TData<int> obj = await fsBannerBLL.GetMaxSort();
             return Json(obj);
         }
         #endregion

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 using YiSha.Business.Cache;
 using YiSha.Business.SystemManage;
 using YiSha.Cache.Factory;
@@ -161,6 +162,124 @@ namespace YiSha.Business.OrganizationManage
             }
             return obj;
         }
+        /// <summary>
+        /// 使用openId，下发token
+        /// </summary>
+        /// <param name="openId"></param>
+        /// <returns></returns>
+        public async Task<TData<UserEntity>> CheckLogin(string openId)
+        {
+            TData<UserEntity> obj = new TData<UserEntity>();
+            if (openId.IsEmpty())
+            {
+                obj.Message = "openId不能为空";
+                return obj;
+            }
+            //已调整，可通过WxOpenId获取用户
+            UserEntity user = await userService.CheckLoginByWx(openId, 1);
+
+            if (user != null )
+            {
+                if (user.UserStatus == (int)StatusEnum.Yes && DateTime.Now < user.LastVisit.Value.AddDays(1))
+                {
+                    user.LoginCount++;
+                    user.IsOnline = 1;
+
+                    #region 设置日期
+                    if (user.FirstVisit == GlobalConstant.DefaultTime)
+                    {
+                        user.FirstVisit = DateTime.Now;
+                    }
+                    if (user.PreviousVisit == GlobalConstant.DefaultTime)
+                    {
+                        user.PreviousVisit = DateTime.Now;
+                    }
+                    if (user.LastVisit != GlobalConstant.DefaultTime)
+                    {
+                        user.PreviousVisit = user.LastVisit;
+                    }
+                    user.LastVisit = DateTime.Now;
+                    #endregion
+
+                    user.ApiToken = SecurityHelper.GetGuid(true);
+                    await GetUserBelong(user);
+
+                    obj.Data = user;
+                    obj.Message = "登录成功";
+                    obj.Tag = 1;
+                }
+                else
+                {
+                    obj.Message = "账号被禁用或token过期，请联系管理员";
+                }
+            }
+            else
+            {
+                obj.Message = "账号不存在，请重新输入";
+            }
+            return obj;
+        }
+        public async Task<TData<UserEntity>> CheckLoginByToken(string token)
+        {
+            TData<UserEntity> obj = new TData<UserEntity>();
+            obj.Tag = 0;
+            if (token.IsEmpty())
+            {
+                obj.Message = "token不能为空";
+                return obj;
+            }
+            //已调整，可通过WxOpenId获取用户
+            UserEntity user = await userService.CheckLoginByWx(token, 2);
+            if (user != null)
+            {
+                if (user.UserStatus == (int)StatusEnum.Yes)
+                {
+                    if(DateTime.Now < user.LastVisit.Value.AddDays(1))
+                    {
+                        user.LoginCount++;
+                        user.IsOnline = 1;
+
+                        #region 设置日期
+                        if (user.FirstVisit == GlobalConstant.DefaultTime)
+                        {
+                            user.FirstVisit = DateTime.Now;
+                        }
+                        if (user.PreviousVisit == GlobalConstant.DefaultTime)
+                        {
+                            user.PreviousVisit = DateTime.Now;
+                        }
+                        if (user.LastVisit != GlobalConstant.DefaultTime)
+                        {
+                            user.PreviousVisit = user.LastVisit;
+                        }
+                        //user.LastVisit = DateTime.Now;
+                        #endregion
+
+                        //user.ApiToken = SecurityHelper.GetGuid(true);
+                        await GetUserBelong(user);
+
+                        obj.Data = user;
+                        obj.Message = "登录成功";
+                        obj.Tag = 1;
+                    }
+                    else
+                    {
+                        obj.Message = "token 已过期";
+                    }
+                    
+                }
+                else
+                {
+                    obj.Message = "账号被禁用，请联系管理员";
+                }
+            }
+            else
+            {
+                obj.Message = "账号不存在，请重新输入";
+            }
+            return obj;
+        }
+
         #endregion
 
         #region 提交数据

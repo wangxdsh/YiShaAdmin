@@ -49,6 +49,13 @@ namespace YiSha.Business.AppManage
             }
             return obj;
         }
+        public async Task<TData<int>> GetMaxSort()
+        {
+            TData<int> obj = new TData<int>();
+            obj.Data = await fsCatgoryService.GetMaxSort();
+            obj.Tag = 1;
+            return obj;
+        }
         #endregion
 
         #region 提交数据

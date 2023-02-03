@@ -8,6 +8,7 @@ using YiSha.Util.Model;
 using YiSha.Entity.OrganizationManage;
 using YiSha.Model.Param.OrganizationManage;
 using YiSha.Service.OrganizationManage;
+using YiSha.Service.AppManage;
 
 namespace YiSha.Business.OrganizationManage
 {
@@ -47,6 +48,13 @@ namespace YiSha.Business.OrganizationManage
             {
                 obj.Tag = 1;
             }
+            return obj;
+        }
+        public async Task<TData<int>> GetMaxSort()
+        {
+            TData<int> obj = new TData<int>();
+            obj.Data = await fsBannerService.GetMaxSort();
+            obj.Tag = 1;
             return obj;
         }
         #endregion

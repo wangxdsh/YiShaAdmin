@@ -41,6 +41,13 @@ namespace YiSha.Service.OrganizationManage
         {
             return await this.BaseRepository().FindEntity<FsBannerEntity>(id);
         }
+        public async Task<int> GetMaxSort()
+        {
+            object result = await this.BaseRepository().FindObject("SELECT MAX(sortIndex) FROM banner");
+            int sort = result.ParseToInt();
+            sort++;
+            return sort;
+        }
         #endregion
 
         #region 提交数据

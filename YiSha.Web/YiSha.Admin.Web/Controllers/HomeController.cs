@@ -147,11 +147,11 @@ namespace YiSha.Admin.Web.Controllers
                 obj.Message = "验证码不能为空";
                 return Json(obj);
             }
-            if (captchaCode != new SessionHelper().GetSession("CaptchaCode").ParseToString())
-            {
-                obj.Message = "验证码错误，请重新输入";
-                return Json(obj);
-            }
+            //if (captchaCode != new SessionHelper().GetSession("CaptchaCode").ParseToString())
+            //{
+            //    obj.Message = "验证码错误，请重新输入";
+            //    return Json(obj);
+            //}
             TData<UserEntity> userObj = await userBLL.CheckLogin(userName, password, (int)PlatformEnum.Web);
             if (userObj.Tag == 1)
             {
