@@ -21,6 +21,7 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,10 +36,13 @@
     <None Remove="AutoMapper.Extensions.Microsoft.DependencyInjection" />
     <None Remove="Profiles\" />
     <None Remove="Controllers\FsWxApi\WxLogin\" />
+    <None Remove="Controllers\FsWxApi\Common\" />
+    <None Remove="Newtonsoft.Json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\FsWxApi\" />
     <Folder Include="Profiles\" />
     <Folder Include="Controllers\FsWxApi\WxLogin\" />
+    <Folder Include="Controllers\FsWxApi\Common\" />
   </ItemGroup>
 </Project>

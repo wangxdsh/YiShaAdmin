@@ -15,10 +15,12 @@ using YiSha.Enum;
 using YiSha.Util;
 using YiSha.Util.Extension;
 using YiSha.Util.Model;
+using YiSha.Entity.AppManage;
 using YiSha.Web.Code;
 using YiSha.Business.OrganizationManage;
 using YiSha.Entity.OrganizationManage;
 using YiSha.Model.Result;
+using YiSha.Business.AppManage;
 
 namespace YiSha.Admin.WebApi.Controllers
 {
@@ -33,6 +35,7 @@ namespace YiSha.Admin.WebApi.Controllers
         {
             this.Authorize = authorize;
         }
+        private MaxWebApisBLL maxWebApisBLL = new MaxWebApisBLL();
 
         /// <summary>
         /// 权限字符串，例如 organization:user:view
@@ -55,89 +58,90 @@ namespace YiSha.Admin.WebApi.Controllers
             Stopwatch sw = new Stopwatch();
             sw.Start();
             bool hasPermission = false;
-            //var resultContext = new ;
-
             string token = context.HttpContext.Request.Headers["ApiToken"].ParseToString();
-
+            string AppId = context.HttpContext.Request.Headers["AppId"].ParseToString();
             OperatorInfo user = await Operator.Instance.Current(token);
-            if (user != null)// 缓存里有用户，就继续判断权限
+            TData obj = new TData();
+            obj.Tag = 0;
+            // 没有权限标识的直接放行
+            if (!string.IsNullOrEmpty(Authorize))
             {
-                #region 看不懂，注释掉不用了
-                //// 根据传入的Token，设置CustomerId
-                //if (context.ActionArguments != null && context.ActionArguments.Count > 0)
-                //{
-                //    PropertyInfo property = context.ActionArguments.FirstOrDefault().Value.GetType().GetProperty("Token");
-                //    if (property != null)
-                //    {
-                //        property.SetValue(context.ActionArguments.FirstOrDefault().Value, token, null);
-                //    }
-                //    switch (context.HttpContext.Request.Method.ToUpper())
-                //    {
-                //        case "GET":
-                //            break;
-
-                //        case "POST":
-                //            property = context.ActionArguments.FirstOrDefault().Value.GetType().GetProperty("CustomerId");
-                //            if (property != null)
-                //            {
-                //                property.SetValue(context.ActionArguments.FirstOrDefault().Value, user.UserId, null);
-                //            }
-                //            break;
-                //    }
-                //}
-                #endregion
-                // 权限判断
-                if (!string.IsNullOrEmpty(Authorize))
+                #region 权限判断
+                
+                //4.根据tkoen获取用户
+                //5. 判断WebApiAuthorize是否存在该用户/角色
+                //6. 判断授权类型 授权类型(1角色 2用户 3IP)
+                //6.1 对比 LimitDate（授权是否过期）
+                //6.2 判断次数 （LimitTimesLength 天，LimitTimes 次）
+                //    有效结果次数，获取有效结果次数
+                if (user != null)// 缓存里有用户，就继续判断权限
                 {
-                    string[] authorizeList = Authorize.Split(',');
-                    TData<List<MenuAuthorizeInfo>> objMenuAuthorize = await new MenuAuthorizeBLL().GetAuthorizeList(user);
-                    List<MenuAuthorizeInfo> authorizeInfoList = objMenuAuthorize.Data.Where(p => authorizeList.Contains(p.Authorize)).ToList();
-                    if (authorizeInfoList.Any())
+                    // 1. 根据Controller,Authorize，权限标识 找到 WebApis
+                    TData<MaxWebApisEntity> maxWebApisEntity = await maxWebApisBLL.GetEntityByAuthorize(int.Parse(AppId), Authorize);
+                    if(maxWebApisEntity.Data.RolesStatus == 1)//鉴权接口，1-限制权限，0-公开
+                    {
+                        // 读取用户权限
+
+                    }
+                    else if(maxWebApisEntity.Data.RolesStatus == 0)//公开接口，公开，直接下一步
                     {
                         hasPermission = true;
-
-                        #region  新增和修改判断
-                        if (context.RouteData.Values["Action"].ToString() == "SaveFormJson")
+                    }
+                    // 权限判断
+                    if (!string.IsNullOrEmpty(Authorize))
+                    {
+                        string[] authorizeList = Authorize.Split(',');
+                        TData<List<MenuAuthorizeInfo>> objMenuAuthorize = await new MenuAuthorizeBLL().GetAuthorizeList(user);
+                        List<MenuAuthorizeInfo> authorizeInfoList = objMenuAuthorize.Data.Where(p => authorizeList.Contains(p.Authorize)).ToList();
+                        if (authorizeInfoList.Any())
                         {
-                            var id = context.HttpContext.Request.Form["Id"];
-                            if (id.ParseToLong() > 0)
+                            hasPermission = true;
+
+                            #region  新增和修改判断
+                            if (context.RouteData.Values["Action"].ToString() == "SaveFormJson")
                             {
-                                if (!authorizeInfoList.Where(p => p.Authorize.Contains("edit")).Any())
+                                var id = context.HttpContext.Request.Form["Id"];
+                                if (id.ParseToLong() > 0)
                                 {
-                                    hasPermission = false;
+                                    if (!authorizeInfoList.Where(p => p.Authorize.Contains("edit")).Any())
+                                    {
+                                        hasPermission = false;
+                                    }
                                 }
+                                else
+                                {
+                                    if (!authorizeInfoList.Where(p => p.Authorize.Contains("add")).Any())
+                                    {
+                                        hasPermission = false;
+                                    }
+                                }
+                            }
+                            #endregion
+                        }
+                        if (!hasPermission)
+                        {
+                            if (context.HttpContext.Request.IsAjaxRequest())
+                            {
+                                obj.Message = "抱歉，没有权限";
+                                context.Result = new JsonResult(obj);
                             }
                             else
                             {
-                                if (!authorizeInfoList.Where(p => p.Authorize.Contains("add")).Any())
-                                {
-                                    hasPermission = false;
-                                }
+                                context.Result = new RedirectResult("~/Home/NoPermission");
                             }
-                        }
-                        #endregion
-                    }
-                    if (!hasPermission)
-                    {
-                        if (context.HttpContext.Request.IsAjaxRequest())
-                        {
-                            TData obj = new TData();
-                            obj.Message = "抱歉，没有权限";
-                            context.Result = new JsonResult(obj);
-                        }
-                        else
-                        {
-                            context.Result = new RedirectResult("~/Home/NoPermission");
                         }
                     }
                 }
+                else
+                {
+                    obj.Message = "该接口需授权后使用";   
+                    context.Result = new JsonResult(obj);
+                }
+                #endregion
             }
             else
             {
-                TData obj = new TData();
-                obj.Message = "先去登录！";
-                obj.Tag = 0;
-                context.Result = new JsonResult(obj);
+                hasPermission = true;
             }
             if (hasPermission)
             {

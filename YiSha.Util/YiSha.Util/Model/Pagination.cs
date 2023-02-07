@@ -32,7 +32,7 @@ namespace YiSha.Util.Model
         /// </summary>
         public string Sort { get; set; }
         /// <summary>
-        /// 排序类型
+        /// 排序类型 asc,desc
         /// </summary>
         public string SortType { get; set; }
         /// <summary>

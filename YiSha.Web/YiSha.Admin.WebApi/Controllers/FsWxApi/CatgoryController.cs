@@ -19,7 +19,6 @@ namespace YiSha.Admin.WebApi.Controllers.FsWxApi
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [AuthorizeFilter]
     public class CatgoryController : Controller
     {
         private FsCatgoryBLL newsBLL = new FsCatgoryBLL();

@@ -22,7 +22,7 @@ namespace YiSha.Data.EF
         /// <returns></returns>
         public static string DeleteSql(string tableName)
         {
-            StringBuilder strSql = new StringBuilder("DELETE FROM " + tableName + "");
+            StringBuilder strSql = new StringBuilder("UPDATE " + tableName  +" SET BaseIsDelete=1 ");
             return strSql.ToString();
         }
 
@@ -35,7 +35,7 @@ namespace YiSha.Data.EF
         /// <returns></returns>
         public static string DeleteSql(string tableName, string propertyName, long propertyValue)
         {
-            StringBuilder strSql = new StringBuilder("DELETE FROM " + tableName + " WHERE " + propertyName + " = " + propertyValue + "");
+            StringBuilder strSql = new StringBuilder("UPDATE " + tableName + " SET BaseIsDelete=1  WHERE " + propertyName + " = " + propertyValue + "");
             return strSql.ToString();
         }
 
@@ -48,7 +48,7 @@ namespace YiSha.Data.EF
         /// <returns></returns>
         public static string DeleteSql(string tableName, string propertyName, long[] propertyValue)
         {
-            string strSql = "DELETE FROM " + tableName + " WHERE " + propertyName + " IN (" + string.Join(",", propertyValue) + ")";
+            string strSql = "UPDATE " + tableName + " SET BaseIsDelete=1 WHERE " + propertyName + " IN (" + string.Join(",", propertyValue) + ")";
             return strSql.ToString();
         }
 

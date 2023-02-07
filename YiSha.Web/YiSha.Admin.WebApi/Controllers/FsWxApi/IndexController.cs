@@ -13,7 +13,9 @@ using YiSha.Model.Param;
 using YiSha.Model.Param.AppManage;
 using YiSha.Model.Param.OrganizationManage;
 using YiSha.Model.Result.AppManage;
+using YiSha.Util;
 using YiSha.Util.Model;
+using Newtonsoft.Json;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -21,7 +23,7 @@ namespace YiSha.Admin.WebApi.Controllers.FsWxApi
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [AuthorizeFilter]
+    [Area("maxsoft")]
     public class IndexController : ControllerBase
     {
         private FsBannerBLL bannerBLL = new FsBannerBLL();
@@ -42,6 +44,7 @@ namespace YiSha.Admin.WebApi.Controllers.FsWxApi
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+       // [AuthorizeFilter("maxsoft:index:banner")]
         public async Task<TData<List<FsBannerEntityDto>>> GetBanner([FromQuery] FsBannerListParam param)
         {
             TData<List<FsBannerEntity>> obj = await bannerBLL.GetList(param);
@@ -65,9 +68,22 @@ namespace YiSha.Admin.WebApi.Controllers.FsWxApi
             objDto.Data = _mapper.Map<List<FsKingConsEntityDto>>(obj.Data);
             return objDto;
         }
+
+        [HttpGet("{msg}")]
+        public  TData<string> sendMq(string msg)
+        {
+            TData<string> res = new TData<string>()
+            {
+                Data = "请求了",
+                Message = "发送了:" + msg,
+                Tag = 1
+            };
+            //RabbitMQHelper.sendMessage(JsonConvert.SerializeObject(msg));
+            return res;
+        }
         #endregion
 
-        
+
     }
 }
 

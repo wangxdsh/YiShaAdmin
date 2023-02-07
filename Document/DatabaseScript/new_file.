@@ -1,0 +1,323 @@
+<DIV id=app class=site>
+	<HEADER class=site-header>
+		<DIV class=container>
+			<DIV class=navbar>
+				<DIV class=logo-wrapper>
+					<A href="https://www.123mac.cn/">
+						<IMG class="logo regular" alt=123Mac src="https://www.123mac.cn/wp-content/uploads/2022/08/1661241371-96d6f2e7e1f705a.png">
+					</A>
+				</DIV>
+				<DIV class=sep></DIV>
+				<NAV class="main-menu d-none d-lg-block">
+					<UL id=menu-123mac class="nav-list u-plain-list">
+						<LI class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home">
+							<A href="https://www.123mac.cn/">
+								<I class="fas fa-home"></I>首页
+							</A>
+						</LI>
+						<LI class="menu-item menu-item-type-taxonomy menu-item-object-category current-menu-item">
+							<A href="https://www.123mac.cn/mac">
+								<I class="fab fa-apple"></I>全部软件
+							</A>
+						</LI>
+						<LI class="menu-item menu-item-type-taxonomy menu-item-object-category">
+							<A href="https://www.123mac.cn/mac/gamesoft">
+								<I class="fas fa-gamepad"></I>Mac游戏
+							</A>
+						</LI>
+						<LI class="menu-item menu-item-type-taxonomy menu-item-object-category">
+							<A href="https://www.123mac.cn/macjc">
+								<I class="fas fa-chalkboard-teacher"></I>教程
+							</A>
+						</LI>
+						<LI class="menu-item menu-item-type-taxonomy menu-item-object-category">
+							<A href="https://www.123mac.cn/ques">
+								<I class="fas fa-question-circle"></I>常见问题
+							</A>
+						</LI>
+						<LI class="menu-item menu-item-type-post_type menu-item-object-page">
+							<A href="https://www.123mac.cn/dhelp">
+								<I class="fas fa-download"></I>安装帮助
+							</A>
+						</LI>
+						<LI class="menu-item menu-item-type-custom menu-item-object-custom">
+							<A href="https://www.123mac.cn/user/tou">
+								<I class="fas fa-level-up-alt"></I>自助投稿
+							</A>
+						</LI>
+					</UL>
+				</NAV>
+				<DIV class=actions>
+					<SPAN title=搜索 class="btn btn-sm search-open navbar-button ml-2" data-target="#omnisearch" data-action="omnisearch-open" rel="nofollow noopener noreferrer">
+						<I class="fas fa-search"></I>
+					</SPAN>
+					<SPAN title=夜间模式 class="btn btn-sm toggle-dark navbar-button ml-2" rel="nofollow noopener noreferrer">
+						<I class="fa fa-moon-o"></I>
+					</SPAN><!-- user navbar dropdown  -->
+					<A class="login-btn navbar-button ml-2" href="#" rel="nofollow noopener noreferrer">
+						<I class="fa fa-user mr-1"></I>投稿
+					</A> <!-- user navbar dropdown -->
+					<DIV class=burger></DIV>
+				</DIV>
+			</DIV>
+		</DIV>
+	</HEADER>
+	<DIV class=header-gap></DIV>
+	<DIV class="term-bar category">
+		<DIV class="term-bg lazyload visible blur scale-12" data-bg="https://www.123mac.cn/wp-content/uploads/2023/02/1675347622-eb584142286fbbb.png"></DIV>
+		<DIV class="container m-auto">
+			<H1 class=term-title>软件</H1>
+			<P class=term-description>mac软件</P>
+		</DIV>
+	</DIV>
+	<MAIN role=main id=main class=site-content>
+		<!--inline dropdown-->
+		<!-- inline-mod  2 -->
+		<DIV class=archive-filter-2>
+			<DIV class=container>
+				<DIV class=filters>
+					<DIV class=filter-tab>
+						<DIV class=row>
+							<DIV class="col-12 col-sm-7"></DIV>
+							<DIV class="col-12 col-sm-5 recent">
+								<UL class=filter>
+									<LI class=" current">
+										<A href="/mac?order=date">
+											<I class="far fa-clock"></I>最新
+										</A>
+									</LI>
+									<LI>
+										<A href="/mac?order=views">
+											<I class="far fa-eye"></I>热度
+										</A>
+									</LI>
+									<LI>
+										<A href="/mac?order=modified">
+											<I class="far fa-clock"></I>更新
+										</A>
+									</LI>
+									<LI>
+										<A href="/mac?order=comment_count">
+											<I class="far fa-comment-dots"></I>评论
+										</A>
+									</LI>
+									<LI>
+										<A href="/mac?order=rand">
+											<I class="fas fa-random"></I>随机
+										</A>
+									</LI>
+								</UL>
+							</DIV>
+						</DIV>
+					</DIV>
+				</DIV>
+			</DIV>
+		</DIV>
+		<DIV class="archive container">
+			<DIV class=row>
+				<DIV class=col-lg-12>
+					<DIV class=content-area>
+						<DIV class="row posts-wrapper scroll">
+							<DIV class="col-lg-6 col-12">
+								<ARTICLE id=post-10264 class="post post-list post-10264 type-post status-publish format-standard hentry category-jianjisoft category-12-x category-13-x category-m1 category-mac">
+									<DIV class=entry-media>
+										<DIV class=placeholder style="PADDING-BOTTOM: 66.66%">
+											<A title="Apeaksoft Video Editor for Mac(视频编辑处理软件) v1.0.36激活版" href="https://www.123mac.cn/archives/10264" rel="nofollow noopener noreferrer" target=_blank>
+												<IMG class=lazyload alt="Apeaksoft Video Editor for Mac(视频编辑处理软件) v1.0.36激活版" src="https://www.123mac.cn/wp-content/themes/ripro-v2/assets/img/thumb-ing.gif" data-src="https://www.123mac.cn/wp-content/uploads/2023/02/1675343689-b9731d4a61227ba.png">
+											</A>
+										</DIV>
+									</DIV>
+									<DIV class=entry-wrapper>
+										<SPAN class=meta-category-dot>
+											<A href="https://www.123mac.cn/mac/jianjisoft" rel=category>
+												<I class=dot></I>影音剪辑
+											</A>
+											<A href="https://www.123mac.cn/czxt/12-x" rel=category>
+												<I class=dot></I>支持12系统
+											</A>
+											<A href="https://www.123mac.cn/czxt/13-x" rel=category>
+												<I class=dot></I>支持13系统
+											</A>
+											<A href="https://www.123mac.cn/m1" rel=category>
+												<I class=dot></I>支持M1/M2
+											</A>
+										</SPAN>
+										<HEADER class=entry-header>
+											<H2 class=entry-title>
+												<A title="Apeaksoft Video Editor for Mac(视频编辑处理软件) v1.0.36激活版" href="https://www.123mac.cn/archives/10264" rel=bookmark target=_blank>Apeaksoft Video Editor for Mac(视频编辑处理软件) v1.0.36激活版</A>
+											</H2>
+										</HEADER>
+										<DIV class=entry-excerpt>Apeaksoft Video Editor是一款极为出色的视频编辑处理软件，能够辅助大家进...</DIV>
+										<DIV class=entry-footer>
+											<DIV class=entry-meta>
+												<SPAN class=meta-date>
+													<TIME datetime="2023-02-02T21:18:42+08:00">
+														<I class="fa fa-clock-o"></I>2023-02-02
+													</TIME>
+												</SPAN>
+											</DIV>
+										</DIV>
+									</DIV>
+								</ARTICLE>
+							</DIV>
+						</DIV>
+						<DIV class="pagination justify-content-center">
+							<SPAN>1/121</SPAN>
+							<A class=current href="https://www.123mac.cn/mac">1</A>
+							<A href="https://www.123mac.cn/mac/page/2">2</A>
+							<A href="https://www.123mac.cn/mac/page/3">3</A>
+							<A href="https://www.123mac.cn/mac/page/4">4</A>
+							<A href="https://www.123mac.cn/mac/page/5">5</A>
+							<A href="https://www.123mac.cn/mac/page/6">6</A>
+							<A class=next href="https://www.123mac.cn/mac/page/2">下一页 <I class="fa fa-chevron-right"></I>
+							</A>
+						</DIV>
+						<DIV class=infinite-scroll-status>
+							<DIV class=infinite-scroll-request>
+								<I class="fa fa-spinner fa-spin " style="FONT-SIZE: 30px"></I>
+							</DIV>
+						</DIV>
+						<DIV class=infinite-scroll-action>
+							<DIV class="infinite-scroll-button btn btn-dark">加载更多</DIV>
+						</DIV>
+					</DIV>
+				</DIV>
+			</DIV>
+		</DIV>
+	</MAIN><!-- #main -->
+	<FOOTER class=site-footer>
+		<DIV class="footer-copyright d-flex text-center">
+			<DIV class=container>
+				<P class="m-0 small">
+					<P>声明：本站所有软件均来源于互联网和网友投稿收集而来，仅供学习和研究使用，如需用于商业用途，请购买正版。如有侵权，请来信联系我们，我们立即删除：123mac_cn@163.com
+						<P></P>
+			</DIV>
+		</DIV>
+	</FOOTER><!-- #footer -->
+</DIV><!-- #page -->
+<DIV class=rollbar>
+	<UL class=actions>
+		<LI>
+			<A title=首页 href="https://www.123mac.cn/" rel="nofollow noopener noreferrer" data-placement="left" data-html="true" data-toggle="tooltip">
+				<I class="fas fa-home"></I>
+			</A>
+		<LI>
+			<A title=VIP会员 href="https://www.123mac.cn/user?action=vip" rel="nofollow noopener noreferrer" target=_blank data-placement="left" data-html="true" data-toggle="tooltip">
+				<I class="fa fa-diamond"></I>
+			</A>
+		<LI>
+			<A title=个人中心 href="https://www.123mac.cn/user" rel="nofollow noopener noreferrer" target=_blank data-placement="left" data-html="true" data-toggle="tooltip">
+				<I class="far fa-user"></I>
+			</A>
+		</LI>
+	</UL>
+	<DIV class="rollbar-item back-to-top">
+		<I class="fas fa-chevron-up"></I>
+	</DIV>
+</DIV>
+<DIV class=m-menubar>
+	<UL>
+		<LI>
+			<A href="https://www.123mac.cn" rel="nofollow noopener noreferrer">
+				<I class="fas fa-home"></I>首页
+			</A>
+		<LI>
+			<A href="https://www.123mac.cn/mac?order=views" rel="nofollow noopener noreferrer">
+				<I class="fas fa-layer-group"></I>全部软件
+			</A>
+		<LI>
+			<A href="https://www.123mac.cn/user" rel="nofollow noopener noreferrer" target=_blank>
+				<I class="fas fa-user"></I>我的
+			</A>
+		<LI>
+			<A class=back-to-top href="javacript:void(0);" rel="nofollow noopener noreferrer">
+				<I class="fas fa-chevron-up"></I>顶部<SPAN></SPAN>
+			</A>
+		</LI>
+	</UL>
+</DIV>
+<DIV id=omnisearch class=omnisearch>
+	<DIV class=container>
+		<FORM class=omnisearch-form method=get action=https://www.123mac.cn/>
+			  <DIV class=form-group>
+			<DIV class="input-group input-group-merge input-group-flush">
+				<DIV class=input-group-prepend>
+					<SPAN class=input-group-text>
+						<I class="fas fa-search"></I>
+					</SPAN>
+				</DIV>
+				<DIV class="input-group-prepend d-flex align-items-center" style="MAX-WIDTH: 10%">
+					<SELECT id=omnisearch-cat class=selectpicker name=cat>
+						<OPTION value="">全部</OPTION>
+						<OPTION class=level-0 value=49>不支持m芯</OPTION>
+						<OPTION class=level-0 value=23>常见问题</OPTION>
+						<OPTION class=level-0 value=46>操作系统版本</OPTION>
+						<OPTION class=level-0 value=45>支持M1/M2</OPTION>
+						<OPTION class=level-0 value=22>教程</OPTION>
+						<OPTION class=level-0 value=1>未分类</OPTION>
+						<OPTION class=level-0 value=41>素材下载</OPTION>
+						<OPTION class=level-0 selected value=3>软件</OPTION>
+					</SELECT>
+				</DIV>
+				<INPUT class="search-ajax-input form-control" name=s autocomplete="off" placeholder="输入关键词 回车搜索...">
+			</DIV>
+	</DIV>
+	</FORM>
+	<DIV class=omnisearch-suggestions>
+		<DIV class=search-keywords>
+			<A class="tag-cloud-link tag-link-34 tag-link-position-1" style="FONT-SIZE: 14px" href="https://www.123mac.cn/macjc/mac%e6%96%b0%e6%89%8b%e5%85%a5%e9%97%a8">Mac新手入门</A>
+			<A class="tag-cloud-link tag-link-21 tag-link-position-2" style="FONT-SIZE: 14px" href="https://www.123mac.cn/mac/gamesoft">Mac游戏</A>
+			<A class="tag-cloud-link tag-link-24 tag-link-position-3" style="FONT-SIZE: 14px" href="https://www.123mac.cn/mac/dtools">下载工具</A>
+			<A class="tag-cloud-link tag-link-7 tag-link-position-4" style="FONT-SIZE: 14px" href="https://www.123mac.cn/mac/bgsoft">办公软件</A>
+			<A class="tag-cloud-link tag-link-11 tag-link-position-5" style="FONT-SIZE: 14px" href="https://www.123mac.cn/mac/pssoft">图像处理</A>
+			<A class="tag-cloud-link tag-link-5 tag-link-position-6" style="FONT-SIZE: 14px" href="https://www.123mac.cn/mac/apps">应用软件</A>
+			<A class="tag-cloud-link tag-link-16 tag-link-position-7" style="FONT-SIZE: 14px" href="https://www.123mac.cn/mac/kfsoft">开发工具</A>
+			<A class="tag-cloud-link tag-link-15 tag-link-position-8" style="FONT-SIZE: 14px" href="https://www.123mac.cn/mac/jianjisoft">影音剪辑</A>
+			<A class="tag-cloud-link tag-link-13 tag-link-position-9" style="FONT-SIZE: 14px" href="https://www.123mac.cn/mac/yysoft">影音工具</A>
+			<A class="tag-cloud-link tag-link-47 tag-link-position-10" style="FONT-SIZE: 14px" href="https://www.123mac.cn/czxt/12-x">支持12系统</A>
+			<A class="tag-cloud-link tag-link-50 tag-link-position-11" style="FONT-SIZE: 14px" href="https://www.123mac.cn/czxt/13-x">支持13系统</A>
+			<A class="tag-cloud-link tag-link-45 tag-link-position-12" style="FONT-SIZE: 14px" href="https://www.123mac.cn/m1">支持M1/M2</A>
+			<A class="tag-cloud-link tag-link-22 tag-link-position-13" style="FONT-SIZE: 14px" href="https://www.123mac.cn/macjc">教程</A>
+			<A class="tag-cloud-link tag-link-18 tag-link-position-14" style="FONT-SIZE: 14px" href="https://www.123mac.cn/mac/qlsoft">清理优化</A>
+			<A class="tag-cloud-link tag-link-26 tag-link-position-15" style="FONT-SIZE: 14px" href="https://www.123mac.cn/mac/enhancement">系统增强</A>
+			<A class="tag-cloud-link tag-link-17 tag-link-position-16" style="FONT-SIZE: 14px" href="https://www.123mac.cn/mac/xitong">系统工具</A>
+			<A class="tag-cloud-link tag-link-12 tag-link-position-17" style="FONT-SIZE: 14px" href="https://www.123mac.cn/mac/sjsoft">设计软件</A>
+			<A class="tag-cloud-link tag-link-3 tag-link-position-18" style="FONT-SIZE: 14px" href="https://www.123mac.cn/mac">软件</A>
+		</DIV>
+		<DIV class="site_abc_wrap pc bottum">
+			<DIV role=alert class="alert alert-danger">特别提醒:安装出现“已损坏，无法打开”，“无法检测是否包含恶意软件”等相关错误，请到【菜单栏-&gt;常见问题】查看解决办法 </DIV>
+		</DIV>
+	</DIV>
+</DIV>
+</DIV>
+<DIV class=dimmer></DIV>
+<DIV class=off-canvas>
+	<DIV class=canvas-close>
+		<I class="fas fa-times"></I>
+	</DIV>
+	<DIV class="mobile-menu d-block d-xl-none d-lg-none"></DIV>
+</DIV>
+<SCRIPT id=popper-js src="https://www.123mac.cn/wp-content/themes/ripro-v2/assets/js/popper.min.js?ver=4.2.0"></SCRIPT>
+
+<SCRIPT id=bootstrap-js src="https://www.123mac.cn/wp-content/themes/ripro-v2/assets/bootstrap/js/bootstrap.min.js?ver=4.6.0"></SCRIPT>
+
+<SCRIPT id=plugins-js src="https://www.123mac.cn/wp-content/themes/ripro-v2/assets/js/plugins.js?ver=4.2.0"></SCRIPT>
+
+<SCRIPT id=app-js-extra>
+	var riprov2 = {"home_url":"https:\/\/www.123mac.cn","admin_url":"https:\/\/www.123mac.cn\/wp-admin\/admin-ajax.php","is_qq_captcha":"0","is_single_gallery":"0","comment_list_order":"asc","infinite_load":"\u52a0\u8f7d\u66f4\u591a","infinite_loading":"\u52a0\u8f7d\u4e2d...","site_notice":{"is":"0","auto":"1","color":"#5b5b5b","html":"<div class=\"notify-content\"><h3><i class=\"fa fa-bell-o mr-2\"><\/i>123\u4e91\u76d8\u8bef\u62a5\u5b58\u5728\u98ce\u9669\u901a\u77e5<\/h3><div>\u56e0123\u7f51\u76d8\u88ab\u8bef\u62a5\u5b58\u5728\u98ce\u9669\uff0c\u4f1a\u62a5\u98ce\u9669\u63d0\u793a\uff0c\u6211\u4eec\u7f51\u7ad9\u8f6f\u4ef6\u4e0d\u5b58\u5728\u7684\u95ee\u9898\u7684\uff0c\u5927\u5bb6\u53ef\u4ee5\u653e\u5fc3\u4e0b\u8f7d\u5b89\u88c5\u3002<br\/>\r\n<hr\/>\r\n\u89e3\u51b3\u65b9\u6848:<br\/>\r\n 1.\u4f7f\u7528\u767e\u5ea6\u7f51\u76d8\u4e0b\u8f7d<br\/>\r\n 2.\u70b9\u51fb\u201c\u663e\u793a\u8be6\u7ec6\u4fe1\u606f\u201d->\"\u7ee7\u7eed\u8bbf\u95ee\u6b64\u7f51\u7ad9\"\u5373\u53ef\u6b63\u5e38\u4e0b\u8f7d\u3002<br\/>\r\n 3.\u4f7f\u7528qq\u3001\u641c\u72d7\u3001360\u8fd9\u4e9b\u6d4f\u89c8\u5668\u4e0b\u8f7d\uff0c\u8c37\u6b4c|firefox|Safari\u8fd9\u4e9b\u6d4f\u89c8\u5668\u4f1a\u8bef\u62a5\u3002<br\/>\r\n<br\/>\r\n<hr\/>\r\n\u5df2\u7ecf\u8054\u7cfb123\u7f51\u76d8\u516c\u53f8\u5904\u7406\u4e2d\u2026\u2026<\/div><\/div>"},"site_js_text":{"login_txt":"\u8bf7\u70b9\u51fb\u5b89\u5168\u9a8c\u8bc1","reg1_txt":"\u90ae\u7bb1\u683c\u5f0f\u9519\u8bef","reg2_txt":"\u8bf7\u70b9\u51fb\u5b89\u5168\u9a8c\u8bc1","pass_txt":"\u8bf7\u70b9\u51fb\u5b89\u5168\u9a8c\u8bc1","bind_txt":"\u8bf7\u70b9\u51fb\u9a8c\u8bc1\u6309\u94ae\u8fdb\u884c\u9a8c\u8bc1","copy_txt":" \u590d\u5236\u6210\u529f","poster_txt":"\u6d77\u62a5\u52a0\u8f7d\u5f02\u5e38","mpwx1_txt":"\u8bf7\u4f7f\u7528\u5fae\u4fe1\u626b\u7801\u767b\u5f55","mpwx2_txt":"\u5173\u6ce8\u516c\u4f17\u53f7\u5373\u53ef\u767b\u5f55<\/br>\u4e8c\u7ef4\u7801\u6709\u6548\u671f3\u5206\u949f","pay1_txt":"\u652f\u4ed8\u5b8c\u6210","pay2_txt":"\u53d6\u6d88\u652f\u4ed8","pay3_txt":"\u652f\u4ed8\u6210\u529f","capt_txt":"\u9a8c\u8bc1\u4e2d","capt1_txt":"\u9a8c\u8bc1\u901a\u8fc7","capt2_txt":"\u9a8c\u8bc1\u5931\u8d25","prompt_txt":"\u8bf7\u8f93\u5165\u56fe\u7247URL\u5730\u5740","comment_txt":"\u63d0\u4ea4\u4e2d....","comment1_txt":"\u63d0\u4ea4\u6210\u529f"},"jquey":"1"};
+</SCRIPT>
+
+<SCRIPT id=app-js src="https://www.123mac.cn/wp-content/themes/ripro-v2/assets/js/app.js?ver=4.2.0"></SCRIPT>
+
+<SCRIPT id=wp-embed-js src="https://www.123mac.cn/wp-includes/js/wp-embed.min.js?ver=5.7.6"></SCRIPT>
+<!-- 自定义js代码 统计代码 -->
+<SCRIPT>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "https://hm.baidu.com/hm.js?d0917671f8a62f7c73697e15c5a695ac";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+</SCRIPT>
+<!-- 自定义js代码 统计代码 END -->

@@ -10,6 +10,8 @@ using YiSha.Model.Param.AppManage;
 using YiSha.Util.Model;
 using YiSha.Model.Result.AppManage;
 using AutoMapper;
+using Newtonsoft.Json;
+using YiSha.Util;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -17,7 +19,6 @@ namespace YiSha.Admin.WebApi.Controllers.FsWxApi
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [AuthorizeFilter]
     public class ContentController : Controller
     {
         private FsNewsBLL newsBLL = new FsNewsBLL();
@@ -69,8 +70,52 @@ namespace YiSha.Admin.WebApi.Controllers.FsWxApi
         public async Task<TData<FsNewsEntity>> GetForm([FromQuery] long id)
         {
             TData<FsNewsEntity> obj = await newsBLL.GetEntity(id);
+            if (obj.Data != null)
+            {
+                if (obj.Data.DownLoadUrl.Contains("123mac.cn") || string.IsNullOrEmpty(obj.Data.DownLoadUrl))
+                {
+                    RabbitMQHelper.sendMessage(JsonConvert.SerializeObject(new FsNewsMqParam() { Id = id }));
+                    FsNewsEntity temp = obj.Data;
+                    temp.DownLoadUrl = "loading";
+                    await newsBLL.SaveForm(temp);
+                }
+            }
             return obj;
         }
+
+        [HttpGet]
+        public async Task<TData<string>> getDownLoadUrlById([FromQuery] long id)
+        {
+            TData<FsNewsEntity> obj = await newsBLL.GetEntity(id);
+            TData<string> resObj = new TData<string>();
+            if(obj.Data != null)
+            {
+                if(obj.Data.DownLoadUrl.Contains("123pan.com"))
+                {
+                    resObj.Data = obj.Data.DownLoadUrl;
+                    resObj.Tag = obj.Tag;
+                    resObj.Total = 1;
+                }
+                else if (obj.Data.DownLoadUrl.Contains("123mac.cn") || string.IsNullOrEmpty(obj.Data.DownLoadUrl))
+                {
+                    resObj.Tag = 3;//表示发送抓取请求
+                    resObj.Message = "资源解析中...";
+                    resObj.Total = 1;
+                    RabbitMQHelper.sendMessage(JsonConvert.SerializeObject(new FsNewsMqParam() { Id = id }));
+                    obj.Data.DownLoadUrl = "loading";
+                    await newsBLL.SaveForm(obj.Data);
+                }
+                else if(obj.Data.DownLoadUrl.Equals("loading"))
+                {
+                    resObj.Message = "资源解析中...";
+                    resObj.Tag = 3;
+                    resObj.Total = 1;
+                }
+            }
+            
+            return resObj;
+        }
+
         #endregion
 
         #region 提交数据

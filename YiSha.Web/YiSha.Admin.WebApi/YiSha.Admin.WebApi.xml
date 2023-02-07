@@ -24,6 +24,13 @@
             <param name="id"></param>
             <returns></returns>
         </member>
+        <member name="M:YiSha.Admin.WebApi.Controllers.FsWxApi.AppsController.GetForm(System.Int64)">
+            <summary>
+            获取应用信息
+            </summary>
+            <param name="id">应用id</param>
+            <returns></returns>
+        </member>
         <member name="M:YiSha.Admin.WebApi.Controllers.FsWxApi.ContentController.GetPageList(YiSha.Model.Param.AppManage.FsNewsListParam,YiSha.Util.Model.Pagination)">
             <summary>
             获取文章列表

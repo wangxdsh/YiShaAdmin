@@ -1,0 +1,91 @@
+﻿@{
+    Layout = "~/Views/Shared/_FormWhite.cshtml";
+}
+
+<div class="wrapper animated fadeInRight">
+    <form id="form" class="form-horizontal m">
+        <div class="form-group">
+            <label class="col-sm-2 control-label ">Name<font class="red"> *</font></label>
+            <div class="col-sm-4">
+                <input id="name" col="Name" type="text" class="form-control" />
+            </div>
+            <label class="col-sm-2 control-label ">Authorize<font class="red"> *</font></label>
+            <div class="col-sm-4">
+                <input id="authorize" col="Authorize" type="text" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label ">ApiStatus<font class="red"> *</font></label>
+            <div class="col-sm-4">
+                <input id="apiStatus" col="ApiStatus" type="text" class="form-control" />
+            </div>
+            <label class="col-sm-2 control-label ">AppsId<font class="red"> *</font></label>
+            <div class="col-sm-4">
+                <input id="appsId" col="AppsId" type="text" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label ">RolesStatus<font class="red"> *</font></label>
+            <div class="col-sm-4">
+                <input id="rolesStatus" col="RolesStatus" type="text" class="form-control" />
+            </div>
+            <label class="col-sm-2 control-label ">Remark<font class="red"> *</font></label>
+            <div class="col-sm-4">
+                <input id="remark" col="Remark" type="text" class="form-control" />
+            </div>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+    var id = ys.request("id");
+    $(function () {
+        getForm();
+
+        $('#form').validate({
+            rules: {
+                name: { required: true }
+            }
+        });
+    });
+
+    function getForm() {
+        if (id > 0) {
+            ys.ajax({
+                url: '@Url.Content("~/AppManage/MaxWebApis/GetFormJson")' + '?id=' + id,
+                type: 'get',
+                success: function (obj) {
+                    if (obj.Tag == 1) {
+                        $('#form').setWebControls(obj.Data);
+                    }
+                }
+            });
+        }
+        else {
+            var defaultData = {};
+            $('#form').setWebControls(defaultData);
+        }
+    }
+
+    function saveForm(index) {
+        if ($('#form').validate().form()) {
+            var postData = $('#form').getWebControls({ Id: id });
+            ys.ajax({
+                url: '@Url.Content("~/AppManage/MaxWebApis/SaveFormJson")',
+                type: 'post',
+                data: postData,
+                success: function (obj) {
+                    if (obj.Tag == 1) {
+                        ys.msgSuccess(obj.Message);
+                        parent.searchGrid();
+                        parent.layer.close(index);
+                    }
+                    else {
+                        ys.msgError(obj.Message);
+                    }
+                }
+            });
+        }
+    }
+</script>
+
