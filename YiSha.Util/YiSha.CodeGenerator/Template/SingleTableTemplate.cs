@@ -16,6 +16,14 @@ using YiSha.Entity.SystemManage;
 using YiSha.Enum.SystemManage;
 using YiSha.Business.Cache;
 using YiSha.Entity;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using NPOI.SS.Formula.Functions;
+using NPOI.SS.UserModel;
+using NPOI.XSSF.Streaming.Values;
+using static NPOI.SS.Formula.Functions.LinearRegressionFunction;
+using Microsoft.AspNetCore.Components.Forms;
+using NPOI.OpenXmlFormats.Spreadsheet;
+using Microsoft.Data.SqlClient.Server;
 
 namespace YiSha.CodeGenerator.Template
 {
@@ -216,6 +224,17 @@ namespace YiSha.CodeGenerator.Template
             sb.AppendLine("            var list= await this.BaseRepository().FindList(expression, pagination);");
             sb.AppendLine("            return list.ToList();");
             sb.AppendLine("        }");
+            if (baseConfigModel.PageForm.FieldList.Any(f => f.Contains("Sort")))
+            {
+                sb.AppendLine("        public async Task<int> GetMaxSort()");
+                sb.AppendLine("        {");
+                sb.AppendLine("            object result = await this.BaseRepository().FindObject(\"SELECT MAX("+ baseConfigModel.PageForm.FieldList.Where(f => f.Contains("Sort")).FirstOrDefault() + ") FROM " + baseConfigModel.TableName + "\");");
+                sb.AppendLine("            int sort = result.ParseToInt();");
+                sb.AppendLine("            sort++;");
+                sb.AppendLine("            return sort;");
+                sb.AppendLine("        }");
+            }
+
             sb.AppendLine();
             sb.AppendLine("        public async Task<" + baseConfigModel.FileConfig.EntityName + "> GetEntity(long id)");
             sb.AppendLine("        {");
@@ -252,6 +271,7 @@ namespace YiSha.CodeGenerator.Template
             sb.AppendLine("            if (param != null)");
             sb.AppendLine("            {");
             sb.AppendLine("            }");
+            sb.AppendLine("            expression = expression.And(t => t.BaseIsDelete==0);");
             sb.AppendLine("            return expression;");
             sb.AppendLine("        }");
             sb.AppendLine("        #endregion");
@@ -317,6 +337,16 @@ namespace YiSha.CodeGenerator.Template
             sb.AppendLine("            }");
             sb.AppendLine("            return obj;");
             sb.AppendLine("        }");
+            if (baseConfigModel.PageForm.FieldList.Any(f => f.Contains("Sort")))
+            {
+                sb.AppendLine("        public async Task<TData<int>> GetMaxSort()");
+                sb.AppendLine("        {");
+                sb.AppendLine("           TData<int> obj = new TData<int>();");
+                sb.AppendLine("           obj.Data = await " + TableMappingHelper.FirstLetterLowercase(baseConfigModel.FileConfig.ServiceName) + ".GetMaxSort();");
+                sb.AppendLine("           obj.Tag = 1;");
+                sb.AppendLine("           return obj;");
+                sb.AppendLine("        }");
+            }
             sb.AppendLine("        #endregion");
             sb.AppendLine();
             sb.AppendLine("        #region 提交数据");
@@ -416,6 +446,15 @@ namespace YiSha.CodeGenerator.Template
             sb.AppendLine("            TData<" + baseConfigModel.FileConfig.EntityName + "> obj = await " + TableMappingHelper.FirstLetterLowercase(baseConfigModel.FileConfig.BusinessName) + ".GetEntity(id);");
             sb.AppendLine("            return Json(obj);");
             sb.AppendLine("        }");
+            if (baseConfigModel.PageForm.FieldList.Any(f => f.Contains("Sort")))
+            {
+                sb.AppendLine("        [HttpGet]");
+                sb.AppendLine("        public async Task<IActionResult> GetMaxSortJson()");
+                sb.AppendLine("        {");
+                sb.AppendLine("            TData<int> obj = await " + TableMappingHelper.FirstLetterLowercase(baseConfigModel.FileConfig.BusinessName) + ".GetMaxSort();");
+                sb.AppendLine("            return Json(obj);");
+                sb.AppendLine("        }");
+            }
             sb.AppendLine("        #endregion");
             sb.AppendLine();
             sb.AppendLine("        #region 提交数据");
@@ -523,7 +562,19 @@ namespace YiSha.CodeGenerator.Template
 
             foreach (string column in baseConfigModel.PageIndex.ColumnList)
             {
-                sb.AppendLine("                { field: '" + column + "', title: '" + column + "' },");
+                if(column.Contains("Image"))
+                {
+                    sb.AppendLine("                {");
+                    sb.AppendLine("                  field: '"+ column + "',");
+                    sb.AppendLine("                  title: 'Icon',");
+                    sb.AppendLine("                  formatter: function(value, row, index) {");
+                    sb.AppendLine("                  return '<img class=\"img -circle img-xs\" src=\"' + value + '\" onclick=showImage(\"'+ value +'\") />'");
+                    sb.AppendLine("                },");
+                }
+                else
+                {
+                    sb.AppendLine("                { field: '" + column + "', title: '" + column + "' },");
+                } 
             }
 
             sb.AppendLine("            ],");
@@ -602,6 +653,19 @@ namespace YiSha.CodeGenerator.Template
             }
             #endregion
 
+            #region 图片查看
+            if(baseConfigModel.PageIndex.ColumnList.Any(p=>p.Contains("Image")))
+            {
+                sb.AppendLine("    function showImage(imageUrl) {");
+                sb.AppendLine("        var html = '<img src='imageUrl' width=\"100%\" height=\"100%\" class=\"img-responsive\" />';");
+                sb.AppendLine("           ys.openDialogContent({");
+                sb.AppendLine("             content: html,");
+                sb.AppendLine("             width: 'auto',height: 'auto',closeBtn: true");
+                sb.AppendLine("             });");
+                sb.AppendLine("    }");
+            }
+            #endregion
+
             sb.AppendLine("</script>");
             return sb.ToString();
         }
@@ -637,12 +701,25 @@ namespace YiSha.CodeGenerator.Template
                             field = baseConfigModel.PageForm.FieldList[i];
                             fieldLower = TableMappingHelper.FirstLetterLowercase(field);
 
-                            sb.AppendLine("        <div class=\"form-group\">");
-                            sb.AppendLine("            <label class=\"col-sm-3 control-label \">" + field + (i == 0 ? "<font class=\"red\"> *</font>" : string.Empty) + "</label>");
-                            sb.AppendLine("            <div class=\"col-sm-8\">");
-                            sb.AppendLine("                <input id=\"" + fieldLower + "\" col=\"" + field + "\" type=\"text\" class=\"form-control\" />");
-                            sb.AppendLine("            </div>");
-                            sb.AppendLine("        </div>");
+                            
+                            if(baseConfigModel.PageForm.FieldList[i].Contains("Image"))
+                            {
+                                sb.AppendLine("        <div class=\"form-group\">");
+                                sb.AppendLine("            <label class=\"col-sm-3 control-label \">" + field + (i == 0 ? "<font class=\"red\"> *</font>" : string.Empty) + "</label>");
+                                sb.AppendLine("            <div class=\"col-sm-8\">");
+                                sb.AppendLine("                <div id =\"" + fieldLower + "\" class=\"img-box\" ></div>");
+                                sb.AppendLine("            </div>");
+                                sb.AppendLine("        </div>");
+                            }
+                            else
+                            {
+                                sb.AppendLine("        <div class=\"form-group\">");
+                                sb.AppendLine("            <label class=\"col-sm-3 control-label \">" + field + (i == 0 ? "<font class=\"red\"> *</font>" : string.Empty) + "</label>");
+                                sb.AppendLine("            <div class=\"col-sm-8\">");
+                                sb.AppendLine("                <input id=\"" + fieldLower + "\" col=\"" + field + "\" type=\"text\" class=\"form-control\" />");
+                                sb.AppendLine("            </div>");
+                                sb.AppendLine("        </div>");
+                            }
                         }
                         break;
 
@@ -656,12 +733,20 @@ namespace YiSha.CodeGenerator.Template
                             {
                                 sb.AppendLine("        <div class=\"form-group\">");
                             }
-
-                            sb.AppendLine("            <label class=\"col-sm-2 control-label \">" + field + "<font class=\"red\"> *</font></label>");
-                            sb.AppendLine("            <div class=\"col-sm-4\">");
-                            sb.AppendLine("                <input id=\"" + fieldLower + "\" col=\"" + field + "\" type=\"text\" class=\"form-control\" />");
-                            sb.AppendLine("            </div>");
-
+                            if (baseConfigModel.PageForm.FieldList[i].Contains("Image"))
+                            {
+                                sb.AppendLine("            <label class=\"col-sm-3 control-label \">" + field + (i == 0 ? "<font class=\"red\"> *</font>" : string.Empty) + "</label>");
+                                sb.AppendLine("            <div class=\"col-sm-8\">");
+                                sb.AppendLine("                <div id =\"" + fieldLower + "\" class=\"img-box\" ></div>");
+                                sb.AppendLine("            </div>");
+                            }
+                            else
+                            {
+                                sb.AppendLine("            <label class=\"col-sm-2 control-label \">" + field + "<font class=\"red\"> *</font></label>");
+                                sb.AppendLine("            <div class=\"col-sm-4\">");
+                                sb.AppendLine("                <input id=\"" + fieldLower + "\" col=\"" + field + "\" type=\"text\" class=\"form-control\" />");
+                                sb.AppendLine("            </div>");
+                            }
                             if (i % 2 == 1)
                             {
                                 sb.AppendLine("        </div>");
@@ -680,6 +765,30 @@ namespace YiSha.CodeGenerator.Template
             sb.AppendLine("    $(function () {");
             sb.AppendLine("        getForm();");
             sb.AppendLine("");
+            // img  richtxt 初始化
+            foreach (string column in baseConfigModel.PageIndex.ColumnList)
+            {
+                if (column.Contains("Image"))
+                {
+                    sb.AppendLine("                $('#"+ column + "').imageUpload({ uploadImage: 'uploadThumbImage', limit: 1, context: ctx });");
+                }
+                else if (column.Contains("Content"))
+                {
+                    sb.AppendLine("        $('#\"+ column.fileName + \"').summernote({");
+                    sb.AppendLine("             height: '220px',lang: 'zh-CN',dialogsInBody: true,");
+                    sb.AppendLine("             callbacks:{");
+                    sb.AppendLine("                 onImageUpload: function(files, editor, welEditable) {");
+                    sb.AppendLine("                     uploadNewsImage(files[0], editor, welEditable);");
+                    sb.AppendLine("                         }");
+                    sb.AppendLine("                     }");
+                    sb.AppendLine("              });");
+                }
+                //else
+                //{
+                //    sb.AppendLine("                { field: '" + column + "', title: '" + column + "' },");
+                //}
+            }
+
             sb.AppendLine("        $('#form').validate({");
             sb.AppendLine("            rules: {");
             sb.AppendLine("                " + TextHelper.GetCustomValue(TableMappingHelper.FirstLetterLowercase(baseConfigModel.PageForm.FieldList.FirstOrDefault()), "fieldName") + ": { required: true }");
@@ -700,8 +809,26 @@ namespace YiSha.CodeGenerator.Template
             sb.AppendLine("            });");
             sb.AppendLine("        }");
             sb.AppendLine("        else {");
-            sb.AppendLine("            var defaultData = {};");
-            sb.AppendLine("            $('#form').setWebControls(defaultData);");
+            if (baseConfigModel.PageForm.FieldList.Any(f => f.Contains("Sort")))
+            {
+                sb.AppendLine("        ys.ajax({");
+                sb.AppendLine("        url: '@Url.Content(\"~/" + baseConfigModel.OutputConfig.OutputModule + "/" + baseConfigModel.FileConfig.ClassPrefix +"/GetMaxSortJson\")',");
+                sb.AppendLine("        type: \"get\",");
+                sb.AppendLine("        success: function(obj) {");
+                sb.AppendLine("               if (obj.Tag == 1)");
+                sb.AppendLine("               {");
+                sb.AppendLine("                   var defaultData = { };");
+                sb.AppendLine("                    defaultData."+ baseConfigModel.PageForm.FieldList.Where(f => f.Contains("Sort")).FirstOrDefault() + " = obj.Data;");
+                sb.AppendLine("                $(\"#form\").setWebControls(defaultData);");
+                sb.AppendLine("                }");
+                sb.AppendLine("            }");
+                sb.AppendLine("        });");
+            }
+            else
+            {
+                sb.AppendLine("            var defaultData = {};");
+                sb.AppendLine("            $('#form').setWebControls(defaultData);");
+            }
             sb.AppendLine("        }");
             sb.AppendLine("    }");
             sb.AppendLine("");
@@ -725,6 +852,56 @@ namespace YiSha.CodeGenerator.Template
             sb.AppendLine("            });");
             sb.AppendLine("        }");
             sb.AppendLine("    }");
+            // 图片及富文本 处理方法
+
+            if (baseConfigModel.PageIndex.ColumnList.Any(p => p.Contains("Image")))
+            {
+                sb.AppendLine("                function uploadThumbImage(file, callback)");
+                sb.AppendLine("                {");
+                sb.AppendLine("                     var formdata = new FormData();");
+                sb.AppendLine("                     formdata.append(\"fileList\", file);");
+                sb.AppendLine("                     ys.ajaxUploadFile({");
+                sb.AppendLine("                     url: '@GlobalContext.SystemConfig.ApiSite' + '/File/UploadFile?fileModule=@UploadFileType.News.ParseToInt()',");
+                sb.AppendLine("                     data: formdata,");
+                sb.AppendLine("                     success: function(obj) {");
+                sb.AppendLine("                        if (obj.Tag == 1)");
+                sb.AppendLine("                          {                    ");
+                sb.AppendLine("                           if (callback)");
+                sb.AppendLine("                              {            ");
+                sb.AppendLine("                                 callback('@GlobalContext.SystemConfig.ApiSite' + obj.Data);");
+                sb.AppendLine("                                 }");
+                sb.AppendLine("                         }");
+                sb.AppendLine("                         else");
+                sb.AppendLine("                         {");
+                sb.AppendLine("                          ys.msgError(obj.Message);");
+                sb.AppendLine("                         }");
+                sb.AppendLine("                     }");
+                sb.AppendLine("                  })");
+                sb.AppendLine("             }");
+            }
+            if (baseConfigModel.PageIndex.ColumnList.Any(p => p.Contains("Content")))
+            {
+                sb.AppendLine("                 function uploadNewsImage(file, editor, welEditable)");
+                sb.AppendLine("                 {");
+                sb.AppendLine("                     var formdata = new FormData();");
+                sb.AppendLine("                     formdata.append(\"fileList\", file);");
+                sb.AppendLine("                     ys.ajaxUploadFile({");
+                sb.AppendLine("                     url: '@GlobalContext.SystemConfig.ApiSite' + '/File/UploadFile?fileModule=@UploadFileType.News.ParseToInt()',");
+                sb.AppendLine("                     data: formdata,");
+                sb.AppendLine("                     success: function(obj) {");
+                sb.AppendLine("                             if (obj.Tag == 1)");
+                sb.AppendLine("                             {");
+                sb.AppendLine("                                 $(\"#newsContent\").summernote('insertImage', '@GlobalContext.SystemConfig.ApiSite' + obj.Data, '/');");
+                sb.AppendLine("                             }");
+                sb.AppendLine("                             else");
+                sb.AppendLine("                             {");
+                sb.AppendLine("                                 ys.msgError(obj.Message);");
+                sb.AppendLine("                             }");
+                sb.AppendLine("                         }");
+                sb.AppendLine("                     })");
+                sb.AppendLine("         }");
+            }
+
             sb.AppendLine("</script>");
             sb.AppendLine("");
             return sb.ToString();

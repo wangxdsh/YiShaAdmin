@@ -22,27 +22,27 @@ namespace YiSha.Business.AppManage
         private MaxAppsService maxAppsService = new MaxAppsService();
 
         #region 获取数据
-        public async Task<TData<List<MaxAppsEntity>>> GetList(MaxAppsListParam param)
+        public async Task<TData<List<MaxCatgoryEntity>>> GetList(MaxAppsListParam param)
         {
-            TData<List<MaxAppsEntity>> obj = new TData<List<MaxAppsEntity>>();
+            TData<List<MaxCatgoryEntity>> obj = new TData<List<MaxCatgoryEntity>>();
             obj.Data = await maxAppsService.GetList(param);
             obj.Total = obj.Data.Count;
             obj.Tag = 1;
             return obj;
         }
 
-        public async Task<TData<List<MaxAppsEntity>>> GetPageList(MaxAppsListParam param, Pagination pagination)
+        public async Task<TData<List<MaxCatgoryEntity>>> GetPageList(MaxAppsListParam param, Pagination pagination)
         {
-            TData<List<MaxAppsEntity>> obj = new TData<List<MaxAppsEntity>>();
+            TData<List<MaxCatgoryEntity>> obj = new TData<List<MaxCatgoryEntity>>();
             obj.Data = await maxAppsService.GetPageList(param, pagination);
             obj.Total = pagination.TotalCount;
             obj.Tag = 1;
             return obj;
         }
 
-        public async Task<TData<MaxAppsEntity>> GetEntity(long id)
+        public async Task<TData<MaxCatgoryEntity>> GetEntity(long id)
         {
-            TData<MaxAppsEntity> obj = new TData<MaxAppsEntity>();
+            TData<MaxCatgoryEntity> obj = new TData<MaxCatgoryEntity>();
             obj.Data = await maxAppsService.GetEntity(id);
             if (obj.Data != null)
             {
@@ -60,7 +60,7 @@ namespace YiSha.Business.AppManage
         #endregion
 
         #region 提交数据
-        public async Task<TData<string>> SaveForm(MaxAppsEntity entity)
+        public async Task<TData<string>> SaveForm(MaxCatgoryEntity entity)
         {
             TData<string> obj = new TData<string>();
             await maxAppsService.SaveForm(entity);

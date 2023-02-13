@@ -10,7 +10,7 @@ namespace YiSha.Model.Param.AppManage
     /// 日 期：2023-02-03 19:25
     /// 描 述：应用管理实体查询类
     /// </summary>
-    public class MaxAppsListParam
+    public class MaxAppsListParam : EntityBaseParam
     {
     }
 }

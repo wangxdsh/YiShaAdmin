@@ -71,7 +71,7 @@ namespace YiSha.Admin.Web.Areas.ToolManage.Controllers
             if (obj.Data != null)
             {
                 // 基础字段不显示出来
-                obj.Data.RemoveAll(p => BaseField.BaseFieldList.Contains(p.name));                
+                obj.Data.RemoveAll(p => BaseField.BaseFieldList.Contains(p.name));
             }
             return Json(obj);
         }

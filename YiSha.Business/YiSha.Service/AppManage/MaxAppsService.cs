@@ -23,23 +23,23 @@ namespace YiSha.Service.AppManage
     public class MaxAppsService :  RepositoryFactory
     {
         #region 获取数据
-        public async Task<List<MaxAppsEntity>> GetList(MaxAppsListParam param)
+        public async Task<List<MaxCatgoryEntity>> GetList(MaxAppsListParam param)
         {
             var expression = ListFilter(param);
             var list = await this.BaseRepository().FindList(expression);
             return list.ToList();
         }
 
-        public async Task<List<MaxAppsEntity>> GetPageList(MaxAppsListParam param, Pagination pagination)
+        public async Task<List<MaxCatgoryEntity>> GetPageList(MaxAppsListParam param, Pagination pagination)
         {
             var expression = ListFilter(param);
             var list= await this.BaseRepository().FindList(expression, pagination);
             return list.ToList();
         }
 
-        public async Task<MaxAppsEntity> GetEntity(long id)
+        public async Task<MaxCatgoryEntity> GetEntity(long id)
         {
-            return await this.BaseRepository().FindEntity<MaxAppsEntity>(id);
+            return await this.BaseRepository().FindEntity<MaxCatgoryEntity>(id);
         }
         public async Task<int> GetMaxSort()
         {
@@ -51,7 +51,7 @@ namespace YiSha.Service.AppManage
         #endregion
 
         #region 提交数据
-        public async Task SaveForm(MaxAppsEntity entity)
+        public async Task SaveForm(MaxCatgoryEntity entity)
         {
             if (entity.Id.IsNullOrZero())
             {
@@ -68,14 +68,14 @@ namespace YiSha.Service.AppManage
         public async Task DeleteForm(string ids)
         {
             long[] idArr = TextHelper.SplitToArray<long>(ids, ',');
-            await this.BaseRepository().Delete<MaxAppsEntity>(idArr);
+            await this.BaseRepository().Delete<MaxCatgoryEntity>(idArr);
         }
         #endregion
 
         #region 私有方法
-        private Expression<Func<MaxAppsEntity, bool>> ListFilter(MaxAppsListParam param)
+        private Expression<Func<MaxCatgoryEntity, bool>> ListFilter(MaxAppsListParam param)
         {
-            var expression = LinqExtensions.True<MaxAppsEntity>();
+            var expression = LinqExtensions.True<MaxCatgoryEntity>();
             if (param != null)
             {
             }

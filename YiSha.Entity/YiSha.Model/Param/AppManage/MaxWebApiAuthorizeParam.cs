@@ -10,7 +10,7 @@ namespace YiSha.Model.Param.AppManage
     /// 日 期：2023-02-04 15:12
     /// 描 述：api授权实体查询类
     /// </summary>
-    public class MaxWebApiAuthorizeListParam
+    public class MaxWebApiAuthorizeListParam : EntityBaseParam
     {
     }
 }

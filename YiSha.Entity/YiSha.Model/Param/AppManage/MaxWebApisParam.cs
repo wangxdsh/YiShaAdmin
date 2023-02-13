@@ -10,7 +10,7 @@ namespace YiSha.Model.Param.AppManage
     /// 日 期：2023-02-04 15:09
     /// 描 述：webApi管理实体查询类
     /// </summary>
-    public class MaxWebApisListParam
+    public class MaxWebApisListParam : EntityBaseParam
     {
     }
 }

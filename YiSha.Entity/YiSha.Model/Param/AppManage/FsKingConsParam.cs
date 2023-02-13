@@ -10,7 +10,7 @@ namespace YiSha.Model.Param.AppManage
     /// 日 期：2023-01-11 16:45
     /// 描 述：首页金刚位实体查询类
     /// </summary>
-    public class FsKingConsListParam
+    public class FsKingConsListParam : EntityBaseParam
     {
     }
 }

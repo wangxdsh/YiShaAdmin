@@ -28,8 +28,14 @@ namespace YiSha.Admin.WebApi.Controllers.FsWxApi
     {
         private FsBannerBLL bannerBLL = new FsBannerBLL();
         private FsKingConsBLL kingconsBll = new FsKingConsBLL();
+        private FsCatgoryBLL fsCatgoryBLL = new FsCatgoryBLL();
+        private FsSubCatgoryBLL fsSubCatgoryBLL = new FsSubCatgoryBLL();
+        private PreviewNewsBLL previewNewsBLL = new PreviewNewsBLL();
 
+        private MaxCatgoryBLL maxCatgoryBLL = new MaxCatgoryBLL();
+        private MaxNewsCatgorysBLL maxNewsCatgorysBLL = new MaxNewsCatgorysBLL();
 
+        private FsNewsBLL fsNewsBLL = new FsNewsBLL();
         private static IMapper _mapper;
 
         public IndexController(IMapper mapper)
@@ -70,7 +76,7 @@ namespace YiSha.Admin.WebApi.Controllers.FsWxApi
         }
 
         [HttpGet("{msg}")]
-        public  TData<string> sendMq(string msg)
+        public TData<string> sendMq(string msg)
         {
             TData<string> res = new TData<string>()
             {
@@ -81,6 +87,144 @@ namespace YiSha.Admin.WebApi.Controllers.FsWxApi
             //RabbitMQHelper.sendMessage(JsonConvert.SerializeObject(msg));
             return res;
         }
+
+        [HttpGet]
+        public async Task<TData<FsKingConsEntity>> copyCatagory()
+        {
+            TData<FsKingConsEntity> res = await kingconsBll.GetEntity(1);
+
+            TData<List<PreviewNewsEntity>> data = await previewNewsBLL.GetList(new PreviewNewsListParam());
+            List<string> tags = new List<string>();
+            foreach(PreviewNewsEntity item in data.Data)
+            {
+                string[] tempTags = item.NewsTag.Split(",");
+                foreach(string tagStr in tempTags)
+                {
+                    if(!tags.Contains(tagStr))
+                    {
+                        tags.Add(tagStr);
+                    }
+                }
+            }
+            if(tags.Count>0)
+            {
+                int i = 0;
+                foreach(string preData in tags)
+                    await maxCatgoryBLL.SaveForm(new MaxCatgoryEntity() { CatgoryTitle = preData,ParentId = 543894528239603712,CatgorySort = (++i) });
+            }
+
+            return res;
+        }
+
+        [HttpGet]
+        public async Task<TData<FsKingConsEntity>> copyContent()
+        {
+            TData<FsKingConsEntity> res = await kingconsBll.GetEntity(1);
+
+            TData<List<PreviewNewsEntity>> data = await previewNewsBLL.GetList(new PreviewNewsListParam());
+
+            foreach (PreviewNewsEntity item in data.Data.Where(p => p.NewsId == long.Parse("1") ))
+            {
+                TData<List<FsNewsEntity>> checkList = await fsNewsBLL.GetList(new FsNewsListParam() { NewsTitle = item.NewsTitle });
+                if(checkList.Data.Count <= 0 )
+                {
+                    // 获取分类
+                    string[] tempTags = item.NewsTag.Split(",");
+                    TData<List<MaxCatgoryEntity>> catObj = await maxCatgoryBLL.GetList(new MaxCatgoryListParam());
+                    // 创建实体
+                    FsNewsEntity fsNewsEntity = new FsNewsEntity()
+                    {
+                        NewsTitle = item.NewsTitle,
+                        NewsContent = item.NewsContent,
+                        NewsTag = item.NewsTag,
+                        ThumbImage = item.ThumbImage,
+                        NewsSort = (int?)item.RemoteId,
+                        NewsAuthor = "pachong",
+                        DownLoadUrl = string.Empty,
+                    };
+                    // 储存实体
+                    TData<string> resNewsId = await fsNewsBLL.SaveForm(fsNewsEntity);
+                    // 关联分类
+                    int sort = 0;
+                    foreach (string catName in tempTags)
+                    {
+                        MaxNewsCatgorysEntity maxNewsCatgorysEntity = new MaxNewsCatgorysEntity();
+
+                        maxNewsCatgorysEntity.NewsId = long.Parse(resNewsId.Data);
+
+                        TData<List<MaxCatgoryEntity>> aimCat = await maxCatgoryBLL.GetList(new MaxCatgoryListParam() { CatgoryTitle = catName });
+
+                        maxNewsCatgorysEntity.CatgoryId = aimCat.Data.FirstOrDefault().Id;
+                        maxNewsCatgorysEntity.Sort = ++sort;
+                        // 储存分类
+                        await maxNewsCatgorysBLL.SaveForm(maxNewsCatgorysEntity);
+                    }
+                    // 更新爬虫本体
+                    item.NewsId = long.Parse(resNewsId.Data);
+                    await previewNewsBLL.SaveForm(item);
+                }      
+            }
+            return res;
+        }
+
+        [HttpGet]
+        public async Task<TData<FsKingConsEntity>> initCatagory()
+        {
+            TData<FsKingConsEntity> res = await kingconsBll.GetEntity(1);
+
+            TData<List<FsNewsEntity>> data = await fsNewsBLL.GetList(new FsNewsListParam());
+
+            foreach (FsNewsEntity item in data.Data)
+            {
+                string[] tempTags = item.NewsTag.Split(",");
+                foreach (string tagStr in tempTags)
+                {
+                    TData < List<MaxCatgoryEntity>> maxCatgoryEntity = await maxCatgoryBLL.GetList(new MaxCatgoryListParam() { CatgoryTitle = tagStr });
+                    if(maxCatgoryEntity.Data.Count>0)
+                    {
+                        MaxNewsCatgorysEntity maxNewsCatgorysEntity = new MaxNewsCatgorysEntity()
+                        {
+                            NewsId = item.Id,
+                            CatgoryId = maxCatgoryEntity.Data.FirstOrDefault().Id
+                        };
+                        await maxNewsCatgorysBLL.SaveForm(maxNewsCatgorysEntity);
+                    }
+                    
+                }
+            }
+
+            return res;
+        }
+
+        [HttpGet]
+        public async Task<TData<FsKingConsEntity>> initContent()
+        {
+            TData<FsKingConsEntity> res = await kingconsBll.GetEntity(1);
+
+            TData<List<FsNewsEntity>> data = await fsNewsBLL.GetList(new FsNewsListParam());
+
+            foreach (FsNewsEntity item in data.Data)
+            {
+                string[] tempTags = item.NewsTag.Split(",");
+                foreach (string tagStr in tempTags)
+                {
+                    TData<List<MaxCatgoryEntity>> maxCatgoryEntity = await maxCatgoryBLL.GetList(new MaxCatgoryListParam() { CatgoryTitle = tagStr });
+                    if (maxCatgoryEntity.Data.Count > 0)
+                    {
+                        MaxNewsCatgorysEntity maxNewsCatgorysEntity = new MaxNewsCatgorysEntity()
+                        {
+                            NewsId = item.Id,
+                            CatgoryId = maxCatgoryEntity.Data.FirstOrDefault().Id
+                        };
+                        await maxNewsCatgorysBLL.SaveForm(maxNewsCatgorysEntity);
+                    }
+
+                }
+            }
+
+            return res;
+        }
+
         #endregion
 
 

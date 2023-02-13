@@ -14,11 +14,13 @@ namespace YiSha.Entity.OrganizationManage
     public class UserEntity : BaseExtensionEntity
     {
         [Description("用户名")]
+        [JsonConverter(typeof(StringJsonConverter))]
         public string UserName { get; set; }
         public string Password { get; set; }
         [JsonIgnore]
         public string Salt { get; set; }
         [Description("真实姓名")]
+        [JsonConverter(typeof(StringJsonConverter))]
         public string RealName { get; set; }
         [Description("性别")]
         public int? Gender { get; set; }

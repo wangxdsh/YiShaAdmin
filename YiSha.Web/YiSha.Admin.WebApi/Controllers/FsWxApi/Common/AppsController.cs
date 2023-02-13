@@ -35,7 +35,7 @@ namespace YiSha.Admin.WebApi.Controllers.FsWxApi
         [HttpGet]
         public async Task<TData<MaxAppsEntityDto>> GetForm([FromQuery] long id)
         {
-            TData<MaxAppsEntity> obj = await maxAppsBLL.GetEntity(id);
+            TData<MaxCatgoryEntity> obj = await maxAppsBLL.GetEntity(id);
             TData<MaxAppsEntityDto> objDto = new TData<MaxAppsEntityDto>();
             objDto.initDto(obj.Tag, obj.Message, obj.Description, obj.Total);
             objDto.Data = _mapper.Map<MaxAppsEntityDto>(obj.Data);

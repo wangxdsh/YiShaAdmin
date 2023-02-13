@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using YiSha.Business.AppManage;
 using YiSha.Business.OrganizationManage;
 using YiSha.Entity.OrganizationManage;
 using YiSha.Enum;
@@ -9,6 +10,8 @@ using YiSha.Util;
 using YiSha.Util.Extension;
 using YiSha.Util.Model;
 using YiSha.Web.Code;
+using YiSha.Entity.AppManage;
+using System.Collections.Generic;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,7 +22,7 @@ namespace AspNetCoreWeChatCode2Session.Controllers
     public class LoginController : ControllerBase
     {
         readonly WeChat _weChat;
-
+        private MaxUserRightsBLL maxUserRightsBLL = new MaxUserRightsBLL();
         private UserBLL userBLL = new UserBLL();
 
         static string session_key = "";
@@ -76,6 +79,28 @@ namespace AspNetCoreWeChatCode2Session.Controllers
                         userObj.Message = "创建了新的用户！";
                     }
                 }
+                // 每日登录，赠送一次
+                TData<List<MaxUserRightsEntity>> userRights = await maxUserRightsBLL.GetList(new YiSha.Model.Param.AppManage.MaxUserRightsListParam()
+                {
+                    UserId = obj.Data.UserId,
+                    Source = 4,
+                    StartTime = DateTime.Today
+                });
+                if(userRights.Data.Count==0)
+                {
+                    MaxUserRightsEntity maxRightsEntity = new MaxUserRightsEntity()
+                    {
+                        UserId = obj.Data.UserId,
+                        RightsName = "登录次卡",
+                        ValidTimeLength = 1,
+                        DailyTimes = 1,
+                        Source = 4,
+                        StartTime = DateTime.Now,
+                        EndTime = DateTime.Now.AddDays(1)
+                    };
+                    TData<string> resId = await maxUserRightsBLL.SaveForm(maxRightsEntity);
+                    obj.Message = string.IsNullOrEmpty(resId.Data) ? "增加次数失败" : "登录成功，并增加次数";
+                }
                 obj.Tag = userObj.Tag;
                 obj.Message = userObj.Message;
             }
@@ -84,10 +109,6 @@ namespace AspNetCoreWeChatCode2Session.Controllers
                 obj.Tag = 0;
                 obj.Message = "code过期，重新申请code再试。code时效5分钟";
             }
-            
-            
-            // 注意: 这里是为了方便演示，开发的时候不应该去传给前端。
-            // 为了数据不被篡改，开发者不应该把 session_key 传到小程序客户端等服务器外的环境。
             return new JsonResult(obj);
         }
         [HttpPost]

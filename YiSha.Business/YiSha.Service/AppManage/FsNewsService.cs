@@ -86,6 +86,10 @@ namespace YiSha.Service.AppManage
             var expression = LinqExtensions.True<FsNewsEntity>();
             if (param != null)
             {
+                if(!string.IsNullOrEmpty(param.NewsTitle))
+                {
+                    expression = expression.And(p => p.NewsTitle.Contains(param.NewsTitle));
+                }
             }
             return expression;
         }
@@ -100,19 +104,39 @@ namespace YiSha.Service.AppManage
                                     a.NewsSort,
                                     a.NewsAuthor,
                                     a.ViewTimes,a.DownLoadUrl,a.BaseCreateTime ");
-            strSql.Append(@" from newsItems a where 1=1");
+            strSql.Append(@" from newsItems a where 1=1 and BaseIsDelete=0");
             var parameter = new List<DbParameter>();
             if (param != null)
             {
                 if (param.catgoryId!=null && !param.catgoryId.ToString().Equals("0"))
                 {
-                    strSql.Append(" AND a.CatgoryId=@CatgoryId");
+                    strSql.Append(" AND a.Id in (SELECT NewsId FROM maxnewscatgorys mnc WHERE mnc.BaseIsDelete=0  ");
+                    strSql.Append(" and mnc.CatgoryId in (SELECT Id FROM maxcatgory mci WHERE " +
+                        "mci.ParentId =@ParentId or mci.Id =@CatgoryId)) ");
                     parameter.Add(DbParameterExtension.CreateDbParameter("@CatgoryId", param.catgoryId));
+                    parameter.Add(DbParameterExtension.CreateDbParameter("@ParentId", param.catgoryId));
                 }
-                if (param.subCatgoryId != null && !param.subCatgoryId.ToString().Equals("0"))
+                if (param.NewsTitle != null)
                 {
-                    strSql.Append(" AND a.SubCatgoryId=@SubCatgoryId");
-                    parameter.Add(DbParameterExtension.CreateDbParameter("@SubCatgoryId", param.subCatgoryId));
+                    strSql.Append(" AND a.NewsTitle like '%"+ param.NewsTitle + "%'  ");
+  
+                    //parameter.Add(DbParameterExtension.CreateDbParameter("@NewsTitle", param.NewsTitle));
+                }
+                if (param.catgoryTitle != null)
+                {
+                    strSql.Append(" AND a.Id in (SELECT NewsId FROM maxnewscatgorys mnc WHERE mnc.BaseIsDelete=0  ");
+                    strSql.Append(" and mnc.CatgoryId in (SELECT Id FROM maxcatgory mci WHERE " +
+                        "mci.catgoryTitle like '%"+ param.catgoryTitle + "%' )) ");
+                }
+                if(param.DownLoadUserId != 0)
+                {
+                    strSql.Append(" AND a.Id in (select mdh.NewsId from MaxDownloadHistory mdh where mdh.UserId=@DownLoadUserId mdh.BaseIsDelete=0");
+                    parameter.Add(DbParameterExtension.CreateDbParameter("@DownLoadUserId", param.DownLoadUserId));
+                }
+                if (param.ViewUserId != 0)
+                {
+                    strSql.Append(" AND a.Id in (select mcv.NewsId from MaxContentViewHistory mcv where mdh.UserId=@ViewUserId mdh.BaseIsDelete=0");
+                    parameter.Add(DbParameterExtension.CreateDbParameter("@ViewUserId", param.ViewUserId));
                 }
             }
             return parameter;

@@ -10,7 +10,7 @@ namespace YiSha.Model.Param.AppManage
     /// 日 期：2023-01-11 16:49
     /// 描 述：文章二级分类实体查询类
     /// </summary>
-    public class FsSubCatgoryListParam
+    public class FsSubCatgoryListParam : EntityBaseParam
     {
         /// <summary>
         /// 所属一级分类

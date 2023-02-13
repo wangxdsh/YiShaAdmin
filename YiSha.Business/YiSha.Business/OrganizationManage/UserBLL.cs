@@ -279,7 +279,35 @@ namespace YiSha.Business.OrganizationManage
             }
             return obj;
         }
+        public async Task<TData<UserEntity>> GetUserByToken(string token)
+        {
+            TData<UserEntity> obj = new TData<UserEntity>();
+            obj.Tag = 0;
+            if (token.IsEmpty())
+            {
+                obj.Message = "token不能为空";
+                return obj;
+            }
+            //已调整，可通过WxOpenId获取用户
+            UserEntity user = await userService.CheckLoginByWx(token, 2);
+            if (user != null)
+            {
+                if (user.UserStatus == (int)StatusEnum.Yes)
+                {
+                    obj.Data = user;
 
+                }
+                else
+                {
+                    obj.Message = "账号被禁用，请联系管理员";
+                }
+            }
+            else
+            {
+                obj.Message = "账号不存在，请重新输入";
+            }
+            return obj;
+        }
         #endregion
 
         #region 提交数据

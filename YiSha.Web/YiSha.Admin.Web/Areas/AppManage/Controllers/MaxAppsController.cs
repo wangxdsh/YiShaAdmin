@@ -44,7 +44,7 @@ namespace YiSha.Admin.Web.Areas.AppManage.Controllers
         [AuthorizeFilter("app:maxapps:search")]
         public async Task<ActionResult> GetListJson(MaxAppsListParam param)
         {
-            TData<List<MaxAppsEntity>> obj = await maxAppsBLL.GetList(param);
+            TData<List<MaxCatgoryEntity>> obj = await maxAppsBLL.GetList(param);
             return Json(obj);
         }
 
@@ -52,14 +52,14 @@ namespace YiSha.Admin.Web.Areas.AppManage.Controllers
         [AuthorizeFilter("app:maxapps:search")]
         public async Task<ActionResult> GetPageListJson(MaxAppsListParam param, Pagination pagination)
         {
-            TData<List<MaxAppsEntity>> obj = await maxAppsBLL.GetPageList(param, pagination);
+            TData<List<MaxCatgoryEntity>> obj = await maxAppsBLL.GetPageList(param, pagination);
             return Json(obj);
         }
 
         [HttpGet]
         public async Task<ActionResult> GetFormJson(long id)
         {
-            TData<MaxAppsEntity> obj = await maxAppsBLL.GetEntity(id);
+            TData<MaxCatgoryEntity> obj = await maxAppsBLL.GetEntity(id);
             return Json(obj);
         }
         #endregion
@@ -67,7 +67,7 @@ namespace YiSha.Admin.Web.Areas.AppManage.Controllers
         #region 提交数据
         [HttpPost]
         [AuthorizeFilter("app:maxapps:add,app:maxapps:edit")]
-        public async Task<ActionResult> SaveFormJson(MaxAppsEntity entity)
+        public async Task<ActionResult> SaveFormJson(MaxCatgoryEntity entity)
         {
             TData<string> obj = await maxAppsBLL.SaveForm(entity);
             return Json(obj);

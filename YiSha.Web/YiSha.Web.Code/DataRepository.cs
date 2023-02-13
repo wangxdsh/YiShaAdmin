@@ -57,6 +57,28 @@ namespace YiSha.Web.Code
             }
             return operatorInfo;
         }
+        public async Task<MaxSoftUserInfo> GetMaxSoftUserByToken(string token)
+        {
+            if (!SecurityHelper.IsSafeSqlParam(token))
+            {
+                return null;
+            }
+            token = token.ParseToString().Trim();
+
+            var strSql = new StringBuilder();
+            strSql.Append(@"SELECT  a.Id as UserId,
+                                    a.UserName,
+                                    a.RealName,
+                                    a.ApiToken,
+                                    (select count(msc.id) from MaxShareCost msc where msc.SUserId=a.Id and msc.BaseIsDelete=0) as ShareHistory,
+                                    (select count(sh.id) from MaxContentViewHistory sh where sh.UserId=a.Id and sh.BaseIsDelete=0) as ViewHistory,
+                                    (select count(mdh.id) from MaxDownloadHistory mdh where mdh.UserId=a.Id and mdh.BaseIsDelete=0) as DownLoadHistory 
+                            FROM    SysUser a
+                            WHERE   a.ApiToken = '" + token + "'  ");
+            MaxSoftUserInfo maxSoftUserInfo = await BaseRepository().FindObject<MaxSoftUserInfo>(strSql.ToString());
+            
+            return maxSoftUserInfo;
+        }
 
     }
 }

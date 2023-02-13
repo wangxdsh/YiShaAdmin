@@ -67,6 +67,12 @@
             <param name="param"></param>
             <returns></returns>
         </member>
+        <member name="M:YiSha.Admin.WebApi.Controllers.FsWxApi.MxCatgoryController.GetCategoryList(YiSha.Model.Param.AppManage.MaxCatgoryListParam)">
+            <summary>
+            获取分类列表
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:YiSha.Admin.WebApi.Controllers.UserController.Login(System.String,System.String)">
             <summary>
             用户登录

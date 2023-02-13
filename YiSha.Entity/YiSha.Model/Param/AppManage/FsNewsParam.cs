@@ -10,9 +10,16 @@ namespace YiSha.Model.Param.AppManage
     /// 日 期：2023-01-12 16:14
     /// 描 述：资源内容实体查询类
     /// </summary>
-    public class FsNewsListParam
+    public class FsNewsListParam : EntityBaseParam
     {
         public long? catgoryId { get; set; }
         public long? subCatgoryId { get; set; }
+
+        public string NewsTitle { get; set; }
+        public string catgoryTitle { get; set; }
+        [JsonConverter(typeof(StringJsonConverter))]
+        public long DownLoadUserId { get; set; }
+        [JsonConverter(typeof(StringJsonConverter))]
+        public long ViewUserId { get; set; }
     }
 }

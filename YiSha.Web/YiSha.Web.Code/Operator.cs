@@ -122,5 +122,11 @@ namespace YiSha.Web.Code
             }
             return user;
         }
+
+        public async Task<MaxSoftUserInfo> CurrentMaxSoftUse(string apiToken)
+        {
+            MaxSoftUserInfo user = await new DataRepository().GetMaxSoftUserByToken(apiToken);
+            return user;
+        }
     }
 }

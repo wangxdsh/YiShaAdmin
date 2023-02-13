@@ -326,7 +326,7 @@ namespace YiSha.Util
 
         public static bool IsSafeSqlParam(string value)
         {
-            return !Regex.IsMatch(value, @"[-|;|,|\/|\(|\)|\[|\]|\}|\{|%|@|\*|!|\']");
+            return !Regex.IsMatch(value, @"[|;|,|\/|\(|\)|\[|\]|\}|\{|%|@|\*|!|\']");
         }
     }
 }

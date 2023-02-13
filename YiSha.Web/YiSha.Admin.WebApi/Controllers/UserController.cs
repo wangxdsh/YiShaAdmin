@@ -16,7 +16,6 @@ namespace YiSha.Admin.WebApi.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [AuthorizeFilter]
     public class UserController : ControllerBase
     {
         private UserBLL userBLL = new UserBLL();
@@ -61,6 +60,20 @@ namespace YiSha.Admin.WebApi.Controllers
             obj.Message = "登出成功";
             return obj;
         }
-        #endregion
+
+        [HttpGet]
+        public async Task<TData<MaxSoftUserInfo>> getMaxUserInfoByToken()
+        {
+            TData<MaxSoftUserInfo> resObj = new TData<MaxSoftUserInfo>();
+            string ApiToken = HttpContext.Request.Headers["ApiToken"];
+            if (!string.IsNullOrEmpty(ApiToken))
+            {
+                    resObj.Data = await Operator.Instance.CurrentMaxSoftUse(ApiToken);
+                if (resObj.Data != null)
+                    resObj.Tag = 1;
+            }
+            return resObj;
+        }
+                #endregion
     }
 }

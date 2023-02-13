@@ -10,7 +10,7 @@ namespace YiSha.Model.Param.AppManage
     /// 日 期：2023-01-11 16:48
     /// 描 述：文章大类实体查询类
     /// </summary>
-    public class FsCatgoryListParam
+    public class FsCatgoryListParam : EntityBaseParam
     {
     }
 }

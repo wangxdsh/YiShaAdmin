@@ -27,7 +27,7 @@ namespace YiSha.Service.AppManage
         {
             var expression = ListFilter(param);
             var list = await this.BaseRepository().FindList(expression);
-            return list.ToList();
+            return list.Where(p=>p.BaseIsDelete==0).ToList();
         }
 
         public async Task<List<FsCatgoryEntity>> GetPageList(FsCatgoryListParam param, Pagination pagination)
@@ -39,7 +39,7 @@ namespace YiSha.Service.AppManage
 
         public async Task<FsCatgoryEntity> GetEntity(long id)
         {
-            return await this.BaseRepository().FindEntity<FsCatgoryEntity>(id);
+            return await this.BaseRepository().FindEntity<FsCatgoryEntity>(p=>p.Id == id & p.BaseIsDelete ==0);
         }
         public async Task<int> GetMaxSort()
         {
@@ -79,6 +79,7 @@ namespace YiSha.Service.AppManage
             if (param != null)
             {
             }
+            expression = expression.And(t => t.BaseIsDelete==0);
             return expression;
         }
         #endregion

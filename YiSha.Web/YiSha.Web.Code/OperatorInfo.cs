@@ -4,6 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using YiSha.Util;
 
 namespace YiSha.Web.Code
 {
@@ -12,10 +14,13 @@ namespace YiSha.Web.Code
     /// </summary>
     public class OperatorInfo
     {
+        [JsonConverter(typeof(StringJsonConverter))]
         public long? UserId { get; set; }
         public int? UserStatus { get; set; }
         public int? IsOnline { get; set; }
+        [JsonConverter(typeof(StringJsonConverter))]
         public string UserName { get; set; }
+        [JsonConverter(typeof(StringJsonConverter))]
         public string RealName { get; set; }
         public string WebToken { get; set; }
         public string ApiToken { get; set; }

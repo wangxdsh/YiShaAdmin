@@ -61,8 +61,9 @@ namespace YiSha.Admin.WebApi
 
             //// 添加WeChat单例服务，资源库
             //services.AddSingleton<WeChat>(new WeChat("wxa1dcda4bdebfeb49", "fb66a8475d9e2dc0ec2d895fc6ea43cf"));
-            // 去水印 d02989fe68cb33c0deb0cf0a9feb3c1c
-            services.AddSingleton<WeChat>(new WeChat("wxf34df708a8253ee6", "d02989fe68cb33c0deb0cf0a9feb3c1c"));
+            // 去水印 wxf34df708a8253ee6 d02989fe68cb33c0deb0cf0a9feb3c1c
+            // Max 软件库 wx372fd33b42934623 b3ecccc4eb6882f9e14b2d6943f22d79
+            services.AddSingleton<WeChat>(new WeChat("wx372fd33b42934623", "b3ecccc4eb6882f9e14b2d6943f22d79"));
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);  // 注册Encoding
 
             GlobalContext.SystemConfig = Configuration.GetSection("SystemConfig").Get<SystemConfig>();

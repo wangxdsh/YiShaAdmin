@@ -10,7 +10,7 @@ namespace YiSha.Model.Param.AppManage
     /// 日 期：2023-02-06 23:45
     /// 描 述：爬虫文章实体查询类
     /// </summary>
-    public class PreviewNewsListParam
+    public class PreviewNewsListParam : EntityBaseParam
     {
         /// <summary>
         /// 原始id
