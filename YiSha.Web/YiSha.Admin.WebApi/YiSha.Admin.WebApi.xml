@@ -47,9 +47,24 @@
             <param name="pagination"></param>
             <returns></returns>
         </member>
+        <member name="M:YiSha.Admin.WebApi.Controllers.FsWxApi.ContentController.GetContentHistory(YiSha.Model.Param.AppManage.FsNewsListParam,YiSha.Util.Model.Pagination)">
+            <summary>
+            分类页-文章列表
+            </summary>
+            <param name="param"></param>
+            <param name="pagination"></param>
+            <returns></returns>
+        </member>
         <member name="M:YiSha.Admin.WebApi.Controllers.FsWxApi.ContentController.GetForm(System.Int64)">
             <summary>
-            获取文章内容
+            获取文章内容,不验证登录
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:YiSha.Admin.WebApi.Controllers.FsWxApi.ContentController.HasDownLoad(System.Int64)">
+            <summary>
+            校验文章是否下载过
             </summary>
             <param name="id"></param>
             <returns></returns>

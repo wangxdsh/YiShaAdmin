@@ -50,10 +50,10 @@ namespace YiSha.Business.AppManage
             }
             return obj;
         }
-        public async Task<TData<int>> GetRightsCount(long userId, DateTime checkDate)
+        public async Task<TData<int>> GetRightsCount(long userId)
         {
             TData<int> obj = new TData<int>();
-            obj.Data = await maxRightsService.GetRightsCount(userId, checkDate);
+            obj.Data = await maxRightsService.GetRightsCount(userId);
             obj.Tag = 1;
             return obj;
         }

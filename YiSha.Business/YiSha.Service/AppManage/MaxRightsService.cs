@@ -44,16 +44,15 @@ namespace YiSha.Service.AppManage
             return await this.BaseRepository().FindEntity<MaxRightsEntity>(id);
         }
 
-        public async Task<int> GetRightsCount(long id,DateTime checkDate)
+        public async Task<int> GetRightsCount(long id)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append(@"SELECT SUM(mur.DailyTimes)-(SELECT count(Id) FROM MaxRightsCost mrc WHERE mrc.BaseIsDelete=0 And UserId=@UserId)  ");
+            strSql.Append(@"SELECT SUM(mur.DailyTimes)-(SELECT count(Id) FROM MaxRightsCost mrc WHERE mrc.BaseIsDelete=0 And mrc.UserId=mur.UserId AND DATE(mrc.UseDate)=DATE(now()))  ");
             strSql.Append(@" from MaxUserRights mur where UserId=@UserId AND mur.BaseIsDelete=0 ");
-            strSql.Append(@" AND mur.StartTime>DATE(@checkDate) AND DATE(@checkDate)<DATE(mur.EndTime)   ");
+            strSql.Append(@" AND now() BETWEEN mur.StartTime and mur.EndTime  ");
 
             var parameter = new List<DbParameter>();
             parameter.Add(DbParameterExtension.CreateDbParameter("@UserId", id));
-            parameter.Add(DbParameterExtension.CreateDbParameter("@checkDate", checkDate));
 
             object result = await this.BaseRepository().FindObject(strSql.ToString(), parameter.ToArray());
             int sort = result.ParseToInt();

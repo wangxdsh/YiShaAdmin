@@ -12,7 +12,7 @@ namespace YiSha.Util.Model
     public class TData
     {
         /// <summary>
-        /// 操作结果，Tag为1代表成功，0代表失败，其他的验证返回结果，可根据需要设置
+        /// 操作结果，Tag为1代表成功，0代表失败， 2.资源加载中 3.登录失效 4.次数用完  5.资源无效
         /// </summary>
         public int Tag { get; set; }
 

@@ -17,9 +17,11 @@ namespace YiSha.Model.Param.AppManage
 
         public string NewsTitle { get; set; }
         public string catgoryTitle { get; set; }
+
+        /// <summary>
+        /// 1. 下载历史  2. 浏览历史
+        /// </summary>
         [JsonConverter(typeof(StringJsonConverter))]
-        public long DownLoadUserId { get; set; }
-        [JsonConverter(typeof(StringJsonConverter))]
-        public long ViewUserId { get; set; }
+        public int HistoryType { get; set; }
     }
 }

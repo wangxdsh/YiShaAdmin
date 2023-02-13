@@ -69,9 +69,43 @@ namespace YiSha.Admin.WebApi.Controllers.FsWxApi
             return objDto;
         }
 
+        /// <summary>
+        /// 分类页-文章列表
+        /// </summary>
+        /// <param name="param"></param>
+        /// <param name="pagination"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<TData<List<FsNewsEntityDto>>> GetContentHistory([FromQuery] FsNewsListParam param, [FromQuery] Pagination pagination)
+        {
+            TData<List<FsNewsEntityDto>> objDto = new TData<List<FsNewsEntityDto>>();
+            string ApiToken = HttpContext.Request.Headers["ApiToken"];
+            if (!string.IsNullOrEmpty(ApiToken) && param.HistoryType != 0 )
+            {
+                TData<UserEntity> user = await userBLL.GetUserByToken(ApiToken);
+                if (user.Data != null)
+                {
+                    TData<List<FsNewsEntity>> obj = await newsBLL.GetHistory((long)user.Data.Id, param.HistoryType, pagination);
+                    objDto.initDto(obj.Tag, obj.Message, obj.Description, obj.Total);
+                    objDto.Data = _mapper.Map<List<FsNewsEntityDto>>(obj.Data);
+                }
+                else
+                {
+                    objDto.Tag = 3;
+                    objDto.Message = "未找到用户";
+                }
+            }
+            else
+            {
+                objDto.Tag = 3;
+                objDto.Message = "登录失效";
+            }
+            
+            return objDto;
+        }
 
         /// <summary>
-        /// 获取文章内容
+        /// 获取文章内容,不验证登录
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -87,11 +121,10 @@ namespace YiSha.Admin.WebApi.Controllers.FsWxApi
                     NewsId = obj.Data.Id
                 };
                 
-                if(string.IsNullOrEmpty(HttpContext.Request.Headers["ApiToken"]))
+                if(!string.IsNullOrEmpty(HttpContext.Request.Headers["ApiToken"]))
                 {
                     TData<UserEntity> user = await userBLL.GetUserByToken(HttpContext.Request.Headers["ApiToken"]);
                     maxContentViewHistoryEntity.UserId = user.Data.Id;
-
                 }
                 await maxContentViewHistoryBLL.SaveForm(maxContentViewHistoryEntity);
 
@@ -102,6 +135,54 @@ namespace YiSha.Admin.WebApi.Controllers.FsWxApi
                     temp.DownLoadUrl = "loading";
                     await newsBLL.SaveForm(temp);
                 }
+            }
+            return obj;
+        }
+        /// <summary>
+        /// 校验文章是否下载过
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("{id}")]
+        public async Task<TData<int>> HasDownLoad(long id)
+        {
+            TData<int> obj = new TData<int>()
+            {
+                Tag = 3,
+                Message = "校验失败"
+            };
+            string token = HttpContext.Request.Headers["ApiToken"];
+            if (!string.IsNullOrEmpty(token) || id != 0)
+            {
+                TData<UserEntity> user = await userBLL.GetUserByToken(token);
+                if (user.Data != null)
+                {
+                    TData<List<MaxRightsCostEntity>> maxDownloadHistoryEntity = await maxRightsCostBLL.GetList(new MaxRightsCostListParam()
+                    {
+                        NewsId = id,
+                        UserId = (long)user.Data.Id
+                    });
+                    obj.Tag = 1;
+                    if (maxDownloadHistoryEntity.Data.Count > 0)
+                    {
+                        obj.Message = "已下载";
+                        obj.Data = 1;
+                    }
+                    else
+                    {
+                        obj.Message = "没下载过";
+                        obj.Data = 0;
+                    }
+                }
+                else
+                {
+                    obj.Message = "找不到对应用户";
+                }
+
+            }
+            else
+            {
+                obj.Message = "登录失效";
             }
             return obj;
         }
@@ -116,7 +197,7 @@ namespace YiSha.Admin.WebApi.Controllers.FsWxApi
                 TData<UserEntity> user = await userBLL.GetUserByToken(ApiToken);
                 if (user.Data != null)
                 {
-                    TData <int> rightCount = await maxRightsBLL.GetRightsCount((long)user.Data.Id, DateTime.Now);
+                    TData <int> rightCount = await maxRightsBLL.GetRightsCount((long)user.Data.Id);
                     TData<FsNewsEntity> newObj = await newsBLL.GetEntity(id);
                     if (newObj.Data != null)
                     {

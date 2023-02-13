@@ -107,6 +107,11 @@ namespace YiSha.Service.AppManage
                     strSql.Append(" AND a.Source=@Source  ");
                     parameter.Add(DbParameterExtension.CreateDbParameter("@Source", param.Source));
                 }
+                if(param.StartTime != null)
+                {
+                    strSql.Append(" AND date(a.StartTime)=date(@StartTime)  ");
+                    parameter.Add(DbParameterExtension.CreateDbParameter("@StartTime", param.StartTime));
+                }
             }
             return parameter;
         }

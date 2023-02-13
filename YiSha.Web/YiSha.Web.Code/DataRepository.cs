@@ -71,8 +71,8 @@ namespace YiSha.Web.Code
                                     a.RealName,
                                     a.ApiToken,
                                     (select count(msc.id) from MaxShareCost msc where msc.SUserId=a.Id and msc.BaseIsDelete=0) as ShareHistory,
-                                    (select count(sh.id) from MaxContentViewHistory sh where sh.UserId=a.Id and sh.BaseIsDelete=0) as ViewHistory,
-                                    (select count(mdh.id) from MaxDownloadHistory mdh where mdh.UserId=a.Id and mdh.BaseIsDelete=0) as DownLoadHistory 
+                                    (select COUNT(DISTINCT(NewsId)) from MaxContentViewHistory sh where sh.UserId=a.Id and sh.BaseIsDelete=0) as ViewHistory,
+                                    (select COUNT(DISTINCT(NewsId)) from MaxDownloadHistory mdh where mdh.UserId=a.Id and mdh.BaseIsDelete=0) as DownLoadHistory 
                             FROM    SysUser a
                             WHERE   a.ApiToken = '" + token + "'  ");
             MaxSoftUserInfo maxSoftUserInfo = await BaseRepository().FindObject<MaxSoftUserInfo>(strSql.ToString());

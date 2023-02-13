@@ -32,7 +32,7 @@ namespace YiSha.Admin.WebApi.Controllers
         }
         // 1. 分享接收
         [HttpGet("{sUserId}")]
-        public async Task<TData<int>> GetShare([FromQuery] string sUserId)
+        public async Task<TData<int>> GetShare(string sUserId)
         {
             TData<int> obj = new TData<int>();
             string gToken =  HttpContext.Request.Headers["ApiToken"];
@@ -51,7 +51,7 @@ namespace YiSha.Admin.WebApi.Controllers
                     MaxUserRightsEntity maxRightsEntity = new MaxUserRightsEntity()
                     {
                         UserId = suser.Data.Id,
-                        RightsName = "次卡",
+                        RightsName = "分享次卡",
                         ValidTimeLength = 999,
                         DailyTimes = 1,
                         Source = 1,
@@ -82,7 +82,7 @@ namespace YiSha.Admin.WebApi.Controllers
                 TData<UserEntity> user = await userBLL.GetUserByToken(ApiToken);
                 if(user.Data != null)
                 {
-                    obj = await maxRightsBLL.GetRightsCount((long)user.Data.Id, DateTime.Now);
+                    obj = await maxRightsBLL.GetRightsCount((long)user.Data.Id);
                 }
                 else
                 {
@@ -96,7 +96,7 @@ namespace YiSha.Admin.WebApi.Controllers
                 obj.Message = "请登录";
                 obj.Tag = 0;
             }
-            return obj;
+            return obj; 
         }
         // 3. 
         // 4. 权益记录，来源，已过期等

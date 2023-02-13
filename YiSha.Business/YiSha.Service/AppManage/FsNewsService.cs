@@ -20,7 +20,7 @@ namespace YiSha.Service.AppManage
     /// 日 期：2023-01-12 16:14
     /// 描 述：资源内容服务类
     /// </summary>
-    public class FsNewsService :  RepositoryFactory
+    public class FsNewsService : RepositoryFactory
     {
         #region 获取数据
         public async Task<List<FsNewsEntity>> GetList(FsNewsListParam param)
@@ -33,7 +33,7 @@ namespace YiSha.Service.AppManage
         public async Task<List<FsNewsEntity>> GetPageList(FsNewsListParam param, Pagination pagination)
         {
             var expression = ListFilter(param);
-            var list= await this.BaseRepository().FindList(expression, pagination);
+            var list = await this.BaseRepository().FindList(expression, pagination);
             return list.ToList();
         }
 
@@ -41,6 +41,14 @@ namespace YiSha.Service.AppManage
         {
             var strSql = new StringBuilder();
             List<DbParameter> filter = ListFilter(param, strSql);
+            var list = await this.BaseRepository().FindList<FsNewsEntity>(strSql.ToString(), filter.ToArray(), pagination);
+            return list.ToList();
+        }
+
+        public async Task<List<FsNewsEntity>> GetHistory(long userId, int type, Pagination pagination)
+        {
+            var strSql = new StringBuilder();
+            List<DbParameter> filter = HistoryFilter(userId, type, strSql);
             var list = await this.BaseRepository().FindList<FsNewsEntity>(strSql.ToString(), filter.ToArray(), pagination);
             return list.ToList();
         }
@@ -86,7 +94,7 @@ namespace YiSha.Service.AppManage
             var expression = LinqExtensions.True<FsNewsEntity>();
             if (param != null)
             {
-                if(!string.IsNullOrEmpty(param.NewsTitle))
+                if (!string.IsNullOrEmpty(param.NewsTitle))
                 {
                     expression = expression.And(p => p.NewsTitle.Contains(param.NewsTitle));
                 }
@@ -108,7 +116,7 @@ namespace YiSha.Service.AppManage
             var parameter = new List<DbParameter>();
             if (param != null)
             {
-                if (param.catgoryId!=null && !param.catgoryId.ToString().Equals("0"))
+                if (param.catgoryId != null && !param.catgoryId.ToString().Equals("0"))
                 {
                     strSql.Append(" AND a.Id in (SELECT NewsId FROM maxnewscatgorys mnc WHERE mnc.BaseIsDelete=0  ");
                     strSql.Append(" and mnc.CatgoryId in (SELECT Id FROM maxcatgory mci WHERE " +
@@ -118,26 +126,43 @@ namespace YiSha.Service.AppManage
                 }
                 if (param.NewsTitle != null)
                 {
-                    strSql.Append(" AND a.NewsTitle like '%"+ param.NewsTitle + "%'  ");
-  
+                    strSql.Append(" AND a.NewsTitle like '%" + param.NewsTitle + "%'  ");
+
                     //parameter.Add(DbParameterExtension.CreateDbParameter("@NewsTitle", param.NewsTitle));
                 }
                 if (param.catgoryTitle != null)
                 {
                     strSql.Append(" AND a.Id in (SELECT NewsId FROM maxnewscatgorys mnc WHERE mnc.BaseIsDelete=0  ");
                     strSql.Append(" and mnc.CatgoryId in (SELECT Id FROM maxcatgory mci WHERE " +
-                        "mci.catgoryTitle like '%"+ param.catgoryTitle + "%' )) ");
+                        "mci.catgoryTitle like '%" + param.catgoryTitle + "%' )) ");
                 }
-                if(param.DownLoadUserId != 0)
-                {
-                    strSql.Append(" AND a.Id in (select mdh.NewsId from MaxDownloadHistory mdh where mdh.UserId=@DownLoadUserId mdh.BaseIsDelete=0");
-                    parameter.Add(DbParameterExtension.CreateDbParameter("@DownLoadUserId", param.DownLoadUserId));
-                }
-                if (param.ViewUserId != 0)
-                {
-                    strSql.Append(" AND a.Id in (select mcv.NewsId from MaxContentViewHistory mcv where mdh.UserId=@ViewUserId mdh.BaseIsDelete=0");
-                    parameter.Add(DbParameterExtension.CreateDbParameter("@ViewUserId", param.ViewUserId));
-                }
+            }
+            return parameter;
+        }
+
+        private List<DbParameter> HistoryFilter(long userId, int type, StringBuilder strSql)
+        {
+            strSql.Append(@"SELECT  a.Id,
+                                    a.CatgoryId,
+                                    a.SubCatgoryId,
+                                    a.NewsTitle,
+                                    a.NewsTag,
+                                    a.ThumbImage,
+                                    a.NewsSort,
+                                    a.NewsAuthor,
+                                    a.ViewTimes,a.DownLoadUrl,a.BaseCreateTime ");
+            strSql.Append(@" from newsItems a where 1=1 and BaseIsDelete=0");
+            var parameter = new List<DbParameter>();
+            switch (type)
+            {
+                case 1:
+                    strSql.Append(" AND a.Id in (select mdh.NewsId from MaxDownloadHistory mdh where mdh.UserId=@DownLoadUserId and mdh.BaseIsDelete=0)");
+                    parameter.Add(DbParameterExtension.CreateDbParameter("@DownLoadUserId", userId));
+                    break;
+                case 2:
+                    strSql.Append(" AND a.Id in (select mcv.NewsId from MaxContentViewHistory mcv where mcv.UserId=@ViewUserId and mcv.BaseIsDelete=0)");
+                    parameter.Add(DbParameterExtension.CreateDbParameter("@ViewUserId", userId));
+                    break;
             }
             return parameter;
         }

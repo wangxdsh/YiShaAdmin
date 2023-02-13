@@ -47,6 +47,15 @@ namespace YiSha.Business.AppManage
             obj.Tag = 1;
             return obj;
         }
+        public async Task<TData<List<FsNewsEntity>>> GetHistory(long userId,int type, Pagination pagination)
+        {
+            TData<List<FsNewsEntity>> obj = new TData<List<FsNewsEntity>>();
+            obj.Data = await fsNewsService.GetHistory(userId, type, pagination);
+            obj.Total = pagination.TotalCount;
+            obj.Tag = 1;
+            return obj;
+        }
+
         public async Task<TData<FsNewsEntity>> GetEntity(long id)
         {
             TData<FsNewsEntity> obj = new TData<FsNewsEntity>();
